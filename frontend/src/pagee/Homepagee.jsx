@@ -1,27 +1,39 @@
 import React from 'react';
+import Header from '../component/Header'
+import { Link } from 'react-router-dom';
 
 const Homepagee = () => {
   return (
     <>
       {/* Top Section */}
-      <div style={{ display: 'flex', width: '100%', height: '0vh' }}>
+      <div style={{ display: 'flex', width: '100%' }}>
         {/* Left Section */}
         <div
           style={{
             flex: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '20px',
+            padding: '',
             paddingTop: '0px',
-            paddingLeft: '60px',
+            paddingLeft: '',
             textAlign: 'center',
-            gap: '10%',
+            gap: '',
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
-          <img src="images/yomari.png" alt="Yomari, a traditional Newari dessert" />
-          <img src="images/chatamari.jpg" alt="Chatamari, a Newari-style pancake" />
-          <img src="images/tho.jpg" alt="Tho, a traditional Newari dish" />
+          <Header />
+          <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', flexGrow: '1', gap: '10px' }}>
+            <span style={{ fontSize: '2rem', fontWeight: '500' }}>
+              Authentic Newari Cuisine, <br />Just a click away
+            </span>
+            <Link 
+              to="/showItems" 
+              className="btn btn-danger me-2" 
+              onClick={() => console.log('Navigating to /menu')}
+              style={{paddingLeft: '25px', paddingRight: '25px', paddingTop: '10px', paddingBottom: '10px'}}
+            >
+              Explore menu
+            </Link>
+          </div>
         </div>
 
         {/* Right Section */}
@@ -36,7 +48,7 @@ const Homepagee = () => {
             src="/images/wholeitem.png"
             alt="Complete Newari meal set"
             style={{
-              paddingBottom: '29%',
+
             }}
           />
         </div>
@@ -48,8 +60,8 @@ const Homepagee = () => {
         alt="Newari cuisine banner"
         style={{
           width: '100%',
-          height: '1000px',
-          paddingTop: '139px',
+          height: '700px',
+          paddingTop: '',
           paddingBottom: '90px',
         }}
       />

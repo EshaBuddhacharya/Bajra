@@ -7,14 +7,23 @@ const Layout = () => {
   const location = useLocation();
 
   // i can add more routes here if needed
-  const hideHeader = location.pathname === '/showitems'|| location.pathname === '/veg' ||  location.pathname === '/nonveg' || location.pathname === '/drinks' || location.pathname === '/desserts' || location.pathname ==='/feastpacks'|| location.pathname ==='/view' || location.pathname ==='/ordersum'|| location.pathname ==='/confirm'|| location.pathname==='/cart'|| location.pathname ==='/confirmm'|| location.pathname==='/order'|| location.pathname ==='/okpage'
+  const headerHiddenRoutes = [
+    '/showitems', '/veg', '/nonveg', '/drinks', '/desserts', 
+    '/feastpacks', '/view', '/ordersum', '/confirm', '/cart', 
+    '/confirmm', '/order', '/okpage', '/login'
+  ];
+  const footerHiddenRoutes = [
+    '/login'
+  ];
+
+  const hideHeader = headerHiddenRoutes.includes(location.pathname);
+  const hideFooter = footerHiddenRoutes.includes(location.pathname);
 
   return (
     <>
       {/* Render Header only if we're not on the /cart page */}
-      {!hideHeader && <Header />}
       <Outlet />
-      <Footer />
+      {!hideFooter && <Footer />}
     </>
   );
 };

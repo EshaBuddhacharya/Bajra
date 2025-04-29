@@ -12,13 +12,13 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg navbar-light bg-danger">
       <div className="container-fluid">
         {/* Brand Logo */}
-        <Link className="navbar-brand text-white d-flex align-items-center" to="/">
+        <Link className="navbar-brand text-white d-flex align-items-center " to="/">
           <img
             src="/images/b.png"
             alt="Logo"
             width="60"
             height="60"
-            className="d-inline-block me-2"
+            className="d-inline-block my-4"
           />
           𑐰𑐖𑑂𑐬 𑐥𑐮𑐵
         </Link>

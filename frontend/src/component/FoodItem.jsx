@@ -1,21 +1,29 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useCart } from "../component/CartContext";
+import React from 'react';
+import { CartContext } from "../component/CartContext";
+import { useState, useContext } from "react";
+import { AuthContext } from '../contexts/AuthContext'
+import { useNavigate } from "react-router-dom";
 
-const FoodItem = ({ name, image, description, types, desc, addToCart }) => {
+const FoodItem = ({ name, imgUrl, description, types, desc: portion, addToCart }) => {
+  imgUrl = process.env.REACT_APP_BACKEND_BASE_URL + imgUrl; 
   const [selectedType, setSelectedType] = useState(types[0].name);
   const [price, setPrice] = useState(types[0].price);
   const [quantity, setQuantity] = useState(1);  // Initial quantity set to 1
   const [error, setError] = useState("");
-  const { cart } = useCart();
-
+  const { cart } = useContext(CartContext);
+  const { isAuthenticated } = useContext(AuthContext)
+  const navigate = useNavigate();
   
   const handleTypeChange = (type) => {
     setSelectedType(type.name);
     setPrice(type.price);
   };
-
+  
   const handleAddToCart = () => {
+    if (!isAuthenticated){
+      navigate('/signin');
+      return;
+    }
     const itemExists = cart.some(
       (item) => item.name === name && item.selectedType === selectedType
     );
@@ -28,7 +36,7 @@ const FoodItem = ({ name, image, description, types, desc, addToCart }) => {
         selectedType,
         price,
         quantity,  
-        image,
+        image: imgUrl,
       };
       addToCart(itemToAdd);
       setError(""); 
@@ -46,7 +54,7 @@ const FoodItem = ({ name, image, description, types, desc, addToCart }) => {
   return (
     <div className="col">
       <div className="card h-100">
-        <img src={image} className="card-img-top" alt={name} />
+        <img src={imgUrl} className="card-img-top" alt={name} />
         <div className="card-body d-flex flex-column justify-content-between">
           <h4 className="card-title">{name}</h4>
           {description && <p className="card-text">{description}</p>}
@@ -60,7 +68,7 @@ const FoodItem = ({ name, image, description, types, desc, addToCart }) => {
               ))}
             </ul>
           </div>
-          {desc && <b><p className="card-text">{desc}</p></b>}
+          {portion && <b><p className="card-text">{portion}</p></b>}
 
           <div className="d-flex justify-content-between">
             <button className="btn btn-light border-danger">

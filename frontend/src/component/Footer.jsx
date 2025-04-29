@@ -49,9 +49,9 @@ const Footer = () => {
         <p>&copy; 2024 Bajra Palaa</p>
         <ul className="list-unstyled d-flex">
           {/* Empty Links Removed */}
-          <li className="ms-3"><Link className="link-body-emphasis" to="#">Privacy Policy</Link></li>
-          <li className="ms-3"><Link className="link-body-emphasis" to="#">Sitemap</Link></li>
-          <li className="ms-3"><Link className="link-body-emphasis" to="#">FAQ</Link></li>
+          <li className="ms-3"><Link className=" text-white link-body-emphasis text-decoration-none" to="#">Privacy Policy</Link></li>
+          <li className="ms-3"><Link className="text-white link-body-emphasis text-decoration-none" to="#">Sitemap</Link></li>
+          <li className="ms-3"><Link className="text-white link-body-emphasis text-decoration-none" to="#">FAQ</Link></li>
         </ul>
       </div>
     </footer>
