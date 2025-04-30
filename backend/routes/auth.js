@@ -9,7 +9,7 @@ const router = express.Router();
 router.post("/register", registerController)
 router.post("/signin", signInController)
 router.get("/isAuthenticated", isAuthenticatedController)
-router.get("/logout", logoutController)
+router.post("/logout", logoutController)
 router.post("/refresh", refreshTokenController)
 
 module.exports = router;

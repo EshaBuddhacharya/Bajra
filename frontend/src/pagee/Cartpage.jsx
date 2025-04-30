@@ -12,7 +12,7 @@ const CartPage = () => {
     return totalPrice + deliveryCharge; // Add the delivery charge to the total price
   };
 
-  return (
+  return (  
     <div>
       <Navbar className= "sticky"/>
       

@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import Navbar from '../component/Navbar';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+
 const FoodItem = ({ name, image, description, types, desc , showtypes = true}) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedType, setSelectedType] = useState(types[0].name);
@@ -213,6 +214,5 @@ return (<>
     </>
   );
 };
-
 
 export default Veg;

@@ -29,6 +29,8 @@ export const CartProvider = ({ children }) => {
       // Add new item to cart
       setCart((prevCart) => [...prevCart, itemToAdd]);
     }
+    console.log("cart item added", JSON.stringify(cart)) //debugging
+
   };
 
   const removeFromCart = (itemToRemove) => {

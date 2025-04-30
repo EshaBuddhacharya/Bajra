@@ -46,6 +46,14 @@ app.listen(PORT, () => {
 
 // mongodb configuration 
 console.log("Connecting to mongodb")
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("Connected to mongodb"))
-.catch(err => console.log(err))
+const connectWithRetry = () => {
+  mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("Connected to mongodb"))
+  .catch(err => {
+    console.log("Error connecting to mongodb:", err.message);
+    console.log("Retrying in 5 seconds...");
+    setTimeout(connectWithRetry, 5000);
+  });
+};
+
+connectWithRetry();
