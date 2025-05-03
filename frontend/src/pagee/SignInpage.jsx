@@ -2,13 +2,14 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import Header from '../component/Header';
+import { toast } from 'react-toastify';
 
 const SignInpage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const backendBaseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+  const backendBaseUrl = import.meta.env.REACT_APP_BACKEND_BASE_URL;
   const { login } = useContext(AuthContext)
 
   const validateForm = () => {
@@ -47,17 +48,13 @@ const SignInpage = () => {
     console.log(backendBaseUrl) //debugging
     if (validateForm()) {
       try {
-        login(email, password)
+        await login(email, password)
         console.log("Logged in successfully") // debugging
         navigate('/showitems'); // Navigate to the Cart page if validation passes
 
       }
       catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          console.log(error.response.data.message);
-        } else {
-          console.log(error.message); // fallback to general error message
-        }
+          toast.error("Error signing in");
       }
     }
   };

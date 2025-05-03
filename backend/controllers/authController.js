@@ -161,7 +161,7 @@ const signInController = async (req, res) => {
       uid: localId
     });
   } catch (error) {
-    console.error('Error signing in:', error);
+    console.error('Error signing in');
     res.status(400).send({
       message: 'Incorrect email or password',
     });

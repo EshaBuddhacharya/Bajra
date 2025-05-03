@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { useCart } from "./CartContext"; // Importing the cart context
+import { useCart, CartContext } from "./CartContext"; // Importing the cart context
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from "../contexts/AuthContext"
 
 const Navbar = () => {
   const { cart } = useCart(); // Access cart from context
+  const { setSelectedCategory } = useContext(CartContext);
+  const navigate = useNavigate()
+  const { isAuthenticated } = useAuth();
 
   // Calculate the total number of items in the cart
-  const totalItems =  cart?.length || 0;
+  const totalItems = cart?.length || 0;
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-danger">
+    <nav className="navbar navbar-expand-lg navbar-light bg-danger text-white">
       <div className="container-fluid">
         {/* Brand Logo */}
         <Link className="navbar-brand text-white d-flex align-items-center " to="/">
@@ -54,31 +59,37 @@ const Navbar = () => {
                 Categories
               </button>
               <ul className="dropdown-menu">
-                <li><Link className="dropdown-item text-dark" to="/showitems">All items</Link></li>
-                <li><Link className="dropdown-item text-dark" to="/veg">Veg</Link></li>
-                <li><Link className="dropdown-item text-dark" to="/nonveg">Non-veg</Link></li>
-                <li><Link className="dropdown-item text-dark" to="/drinks">Drinks</Link></li>
-                <li><Link className="dropdown-item text-dark" to="/desserts">Desserts</Link></li>
+                <li><button className="dropdown-item text-dark" onClick={() => { setSelectedCategory('all'); navigate('/showItems'); }}>All items</button></li>
+                <li><button className="dropdown-item text-dark" onClick={() => { setSelectedCategory('Veg'); navigate('/showItems'); }}>Veg</button></li>
+                <li><button className="dropdown-item text-dark" onClick={() => { setSelectedCategory('Nonveg'); navigate('/showItems'); }}>Non-veg</button></li>
+                <li><button className="dropdown-item text-dark" onClick={() => { setSelectedCategory('Beverage'); navigate('/showItems'); }}>Drinks</button></li>
+                <li><button className="dropdown-item text-dark" onClick={() => { setSelectedCategory('Desserts'); navigate('/showItems'); }}>Desserts</button></li>
                 <li><hr className="dropdown-divider" /></li>
-                <li><Link className="dropdown-item text-dark" to="/feastpacks">Special Feast Packages</Link></li>
+                <li><button className="dropdown-item text-dark" onClick={() => { setSelectedCategory('feastpacks'); navigate('/showItems'); }}>Special Feast Packages</button></li>
               </ul>
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link text-white" to="/feastpacks">Special Feast Packages</Link>
+              <button className="nav-link text-white" onClick={() => { setSelectedCategory('feastpacks'); navigate('/showItems'); }}>Special Feast Packages</button>
             </li>
 
             {/* Cart Link with Dynamic Count */}
             <li className="nav-item">
-              <Link className="nav-link text-white position-relative" to="/cart">
-                Cart
-                {totalItems > 0 && (
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-danger">
-                    {totalItems}
-                  </span>
-                )}
-              </Link>
+              {isAuthenticated && (
+                <Link className="nav-link text-white position-relative" to="/cart">
+                  Cart
+                  {totalItems > 0 && (
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-danger">
+                      {totalItems}
+                    </span>
+                  )}
+                </Link>
+              )}
             </li>
+            {isAuthenticated &&
+              (
+                <li className="nav-item"><Link to='/OrderPage' className="nav-link text-white">Orders</Link></li>
+              )}
           </ul>
 
           {/* Search Bar */}

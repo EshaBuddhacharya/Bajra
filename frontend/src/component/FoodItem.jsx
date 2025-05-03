@@ -1,11 +1,11 @@
 import React from 'react';
-import { CartContext } from "../component/CartContext";
+import { CartContext } from "./CartContext";
 import { useState, useContext } from "react";
 import { AuthContext } from '../contexts/AuthContext'
 import { useNavigate } from "react-router-dom";
 
-const FoodItem = ({ name, imgUrl, description, types, desc: portion, addToCart }) => {
-  imgUrl = process.env.REACT_APP_BACKEND_BASE_URL + imgUrl; 
+const FoodItem = ({ name, imgUrl, description, types, desc: portion, addToCart, _id }) => {
+  imgUrl = import.meta.env.VITE_BACKEND_BASE_URL + imgUrl; 
   const [selectedType, setSelectedType] = useState(types[0].name);
   const [price, setPrice] = useState(types[0].price);
   const [quantity, setQuantity] = useState(1);  // Initial quantity set to 1
@@ -34,6 +34,7 @@ const FoodItem = ({ name, imgUrl, description, types, desc: portion, addToCart }
       const itemToAdd = {
         name,
         selectedType,
+        _id,
         price,
         quantity,  
         image: imgUrl,

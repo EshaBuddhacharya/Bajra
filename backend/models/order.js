@@ -27,10 +27,11 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     deliveryLocation: String,
+    additionalInstructions: String,
     orderStatus: {
         type: String,
-        enum: ['onhold', 'pending', 'inprogress', 'in delivery', 'completed'],
-        default: 'onhold'
+        enum: ['pending', 'inprogress', 'in delivery', 'completed', 'canceled'],
+        default: 'pending'
     },
     createdAt: {
         type: Date,
