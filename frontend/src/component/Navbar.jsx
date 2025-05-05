@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { useCart, CartContext } from "./CartContext"; // Importing the cart context
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from "../contexts/AuthContext"
+import { Search } from 'lucide-react';
+import { TextField } from '@radix-ui/themes'
 
 const Navbar = () => {
-  const { cart } = useCart(); // Access cart from context
+  const { cart, setSearch, search } = useCart(); // Access cart from context
   const { setSelectedCategory } = useContext(CartContext);
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth();
@@ -14,18 +16,21 @@ const Navbar = () => {
   const totalItems = cart?.length || 0;
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-danger text-white">
+    <nav className="navbar navbar-expand-lg navbar-light bg-danger text-white sticky-top px-0 px-lg-5">
       <div className="container-fluid">
         {/* Brand Logo */}
-        <Link className="navbar-brand text-white d-flex align-items-center " to="/">
+        <Link className="navbar-brand text-white d-flex align-items-center gap-2 " to="/">
           <img
             src="/images/b.png"
             alt="Logo"
-            width="60"
-            height="60"
+            width="70"
+            height="70"
             className="d-inline-block my-4"
           />
-          𑐰𑐖𑑂𑐬 𑐥𑐮𑐵
+          <h4>
+
+            𑐰𑐖𑑂𑐬 <br /> 𑐥𑐮𑐵
+          </h4>
         </Link>
 
         {/* Mobile Menu Toggle */}
@@ -41,7 +46,7 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className="collapse navbar-collapse mx-4" id="navbarSupportedContent">
           {/* Navigation Links */}
           <ul className="navbar-nav me-auto mb-2 mb-lg-0 gap-3">
             <li className="nav-item">
@@ -93,17 +98,18 @@ const Navbar = () => {
           </ul>
 
           {/* Search Bar */}
-          <form className="d-flex" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-light" type="submit">
-              Search
-            </button>
-          </form>
+          <TextField.Root
+            placeholder="Search"
+            value={search}
+            type='search'
+            color='white'
+            style={{width:'16rem'}}
+            onChange={(e) => setSearch(e.target.value)}
+          >
+            <TextField.Slot>
+              <Search height="16" width="16" />
+            </TextField.Slot>
+          </TextField.Root>
         </div>
       </div>
     </nav>

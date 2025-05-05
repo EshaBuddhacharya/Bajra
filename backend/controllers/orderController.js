@@ -59,11 +59,41 @@ const getOrders = async (req, res) => {
     });
 
     const userOrder = await Order.find({ user }).populate('items.menuItem', 'name price description imgUrl')
-    .sort({ createdAt: -1 })
-    .catch(err => {
-        console.error("Error retrieving user's order:", err);
-        return res.status(500).send("Error retrieving user order");
-    });
+        .sort({ createdAt: -1, orderStatus: 1 })
+        .catch(err => {
+            console.error("Error retrieving user's order:", err);
+            return res.status(500).send("Error retrieving user order");
+        });
     return res.send(userOrder)
 }
-module.exports = { addOrder, getAddress, getOrders }
+
+const cancelOrder = async (req, res) => {
+    console.log("POST /api/order/cancelOrder")
+    const orderId = req.body.orderId
+
+    // verifying orderId exists
+    if (!orderId) {
+        return res.status(400).send({ message: 'No order id provided' })
+    }
+
+    // retriving userOrdrer from database
+    try {
+        const userOrder = await Order.findOne({ _id: orderId })
+        if (!userOrder) {
+            return res.status(404).send({ message: 'Order not found' })
+        }
+        userOrder.orderStatus = 'canceled'
+        await userOrder.save()
+        return res.status(200).send({ message: 'Order canceled successfully' })
+    }
+    catch (error) { 
+        return res.status(500).send({message: 'Error retriving user order'})
+    }
+    
+}
+
+const getDeliveryCost = (req, res) => {
+    console.log('GET /api/order/getDeliveryCost')
+    return res.send(150)
+}
+module.exports = { addOrder, getAddress, getOrders, getDeliveryCost, cancelOrder }

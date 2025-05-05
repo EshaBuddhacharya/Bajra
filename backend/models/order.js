@@ -38,6 +38,19 @@ const orderSchema = new mongoose.Schema({
         default: Date.now
     }
 });
+// Corrected virtual for calculating total
+orderSchema.virtual('total').get(function () {
+    let sum = 0;
+    for (const item of this.items) {
+        const price = item.selectedType?.price || 0;
+        sum += item.quantity * price;
+    }
+    return sum;
+});
+
+// Ensure virtuals are included in JSON and object outputs
+orderSchema.set('toObject', { virtuals: true });
+orderSchema.set('toJSON', { virtuals: true });
 
 const Order = mongoose.model('Order', orderSchema);
 module.exports = Order;
