@@ -131,7 +131,7 @@ export default function AuthProvider({ children }) {
     axiosInstance,
   }), [user, accessToken, isAuthenticated, authCookie, login, logout, axiosInstance, useAuth]);
 
-  if (loading) return null; // or a spinner
+if (loading) return null; // or a spinner
 
   return (
     <AuthContext.Provider value={value}>
