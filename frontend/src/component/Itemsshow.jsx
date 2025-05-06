@@ -3,7 +3,8 @@ import FoodItem from "./FoodItem"; // Import FoodItem component
 import { useCart, CartContext } from "./CartContext";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
-import { ShoppingBasket } from 'lucide-react';
+import HoveringCart from "./hoveringCart";
+import { motion, AnimatePresence } from 'framer-motion'
 
 const Itemsshow = () => {
   const { addToCart, search } = useCart(); // Get addToCart from context
@@ -35,47 +36,55 @@ const Itemsshow = () => {
     return item.category === selectedCategory;
   });
 
+  const renderSpinner = () => (
+    <div className="d-flex justify-content-center align-items-center" style={{ height: "60vh" }}>
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    </div>
+  );
+
+  const renderNoResults = () => (
+    <motion.div
+      className="w-100 text-center py-5"
+      key="no-results" // Unique key for the no-results case
+      initial={{ opacity: 0, filter: 'blur(10px)' }} // Start faded out
+      animate={{ opacity: 1, filter: 'blur(0px)' }} // Fade in
+      exit={{ opacity: 0, filter: 'blur(10px)' }} // Fade out when exiting
+      transition={{ duration: 0.3 }} // Animation duration of 0.3 seconds>
+    >
+      <h2>No Results Found</h2>
+    </motion.div>
+  );
+
+  const renderMenuItems = () => (
+    <AnimatePresence>
+      <motion.div className="row row-cols-1 row-cols-md-3 py-2 g-4 mx-md-4 m-0">
+        {filteredItems.length > 0 ? (
+          filteredItems.map((item, index) => (
+            <motion.div
+              key={item.id || index} // Prefer item.id for uniqueness, fallback to index
+              initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }} // Start blurred and scaled down
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }} // Remove blur and scale up
+              exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+              transition={{ duration: 0.3 }} // Animation duration of 0.3 seconds
+              layout // Enable layout animations for this item
+            >
+              <FoodItem {...item} addToCart={addToCart} />
+            </motion.div>
+          ))
+        ) : (
+          renderNoResults()
+        )}
+      </motion.div>
+    </AnimatePresence>
+  );
+
+
   return (
     <div>
-      {isLoading ? (
-        <div
-          style={{
-            height: "60vh",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        </div>
-      ) : (
-        <div className="row row-cols-1 row-cols-md-3 py-5 g-4 mx-md-5 m-0">
-          {filteredItems.length > 0 ? (
-            filteredItems.map((item, index) => (
-              <FoodItem key={index} {...item} addToCart={addToCart} />
-            ))
-          ) : (
-            <div className="w-100 text-center py-5">
-              <h2>No Results Found</h2>
-            </div>
-          )}
-        </div>
-      )}
-      <div className="d-md-block" style={{
-        position: 'fixed',
-        bottom: '2rem',
-        right: '3rem',
-        backgroundColor: 'white',
-        padding: '10px',
-        borderRadius: '50%',
-        boxShadow: '0 2px 5px rgba(0,0,0,0.4)',
-        cursor: 'pointer'
-      }}>
-        <ShoppingBasket />
-      </div>
+      {isLoading ? renderSpinner() : renderMenuItems()}
+      <HoveringCart />
     </div>
   );
 };
