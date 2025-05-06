@@ -4,13 +4,15 @@ import { useCart, CartContext } from "./CartContext";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import HoveringCart from "./hoveringCart";
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'  // eslint-disable-line no-unused-vars
 
 const Itemsshow = () => {
-  const { addToCart, search } = useCart(); // Get addToCart from context
+  const { addToCart, cart, search } = useCart(); // Get addToCart from context
   const [menuData, setMenuData] = useState([]);
   const { selectedCategory } = useContext(CartContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  const cartHasItem = (cart?.length || 0) >= 1; // getting number of items in cart
 
   useEffect(() => {
     setIsLoading(true);
@@ -84,7 +86,7 @@ const Itemsshow = () => {
   return (
     <div>
       {isLoading ? renderSpinner() : renderMenuItems()}
-      <HoveringCart />
+      {cartHasItem && <HoveringCart />}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion'; // eslint-disable-line no-unused-vars
 
 import { CartContext } from './CartContext';
 import { AuthContext } from '../contexts/AuthContext';
