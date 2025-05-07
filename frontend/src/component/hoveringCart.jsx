@@ -4,6 +4,7 @@ import { useCart } from './CartContext';
 import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 import { Dialog, Button, Flex } from '@radix-ui/themes';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
 
 export default function HoveringCart() {
   const [isClicked, setIsClicked] = useState(false);
@@ -15,8 +16,19 @@ export default function HoveringCart() {
 
   const { cart, removeFromCart, setCart } = useCart();
   const { axiosInstance } = useAuth();
-
+  const controls = useAnimation();
   const totalItems = cart?.length || 0; // getting number of items in cart
+
+  useEffect(() => {
+    controls.start({
+      scale: [0.9, 1],
+      transition: {
+        duration: 0.8,
+        type: "spring",
+        bounce: 0.8,
+      },
+    });
+  }, [cart, controls])
 
   useEffect(() => {
     axiosInstance
@@ -43,12 +55,17 @@ export default function HoveringCart() {
 
   const renderHeader = () => (
     <>
-      <div className="d-flex justify-content-between align-items-center p-2 pb-0">
+      <div className="d-flex justify-content-between align-items-center px-3 pt-2 pb-0">
         <div className='d-flex gap-2'>
-          <ShoppingBasket />
+          <ShoppingBasket height='25px' width='20px' />
           <h5 className="p-0 m-0">Cart</h5>
         </div>
-        <div onClick={() => setIsClicked(false)} style={{ cursor: 'pointer' }}>
+        <div
+          onClick={() => setIsClicked(false)}
+          style={{ cursor: 'pointer' }}
+          onMouseEnter={(e) => e.currentTarget.style.color = '#dc3545'}
+          onMouseLeave={(e) => e.currentTarget.style.color = ''}
+        >
           <Minimize2 height="18px" width="18px" />
         </div>
       </div>
@@ -139,30 +156,46 @@ export default function HoveringCart() {
   );
 
   const renderCartItem = (item) => (
-    <div key={item.name + item.selectedType} className="card" style={{ width: '100%', border: 'none' }}>
-      <div className="row d-flex justify-content-center align-items-center">
-        <div className="col-md-4 p-0" style={{ height: '100px', overflow: 'hidden' }}>
-          <img
-            src={item.image}
-            className="img-fluid rounded-start"
-            alt={item.name}
-            style={{ height: '100%', width: '100%', objectFit: 'cover', borderRadius: '10%' }}
-          />
-        </div>
-        <div className="col-md-8 p-0">
-          <div className="card-body px-4 py-2">
-            <h6 className="card-title">
-              {item.name} ({item.selectedType})
-            </h6>
-            <p className="card-text m-0">Price: Rs {item.price}</p>
-            <p className="card-text m-0">Quantity: {item.quantity}</p>
-            <button onClick={() => removeFromCart(item)} className="btn btn-danger btn-sm mt-1">
-              Remove
-            </button>
+    <AnimatePresence mode="popLayout">
+      <motion.div
+        key={item.name + item.selectedType}
+        className="card rounded"
+        style={{ width: '100%', border: 'none' }}
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: -20 }}
+        transition={{ duration: 0.15 }}
+        layout
+      >
+        <div className="row d-flex justify-content-center align-items-center">
+          <div className="col-md-4 p-0" style={{ height: '100px', width: '108px', overflow: 'hidden' }}>
+            <img
+              src={item.image}
+              className="img-fluid"
+              alt={item.name}
+              style={{ height: '100%', width: '100%', objectFit: 'cover', borderRadius: '20%' }}
+            />
+          </div>
+          <div className="col-md-8 p-0">
+            <div className="card-body px-3 py-2">
+              <h6 className="card-title text-sm">
+                {item.name} ({item.selectedType})
+              </h6>
+              <p className="card-text m-0" style={{ fontSize: '12px' }}>Price: Rs {item.price}</p>
+              <p className="card-text m-0" style={{ fontSize: '12px' }}>Quantity: {item.quantity}</p>
+              <motion.button
+                onClick={() => removeFromCart(item)}
+                className="btn btn-danger btn-sm mt-1"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.99 }}
+              >
+                Remove
+              </motion.button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </AnimatePresence>
   );
 
   const renderCard = () => (
@@ -174,8 +207,8 @@ export default function HoveringCart() {
         right: '1rem',
         backgroundColor: 'white',
         padding: '10px',
-        height: '25rem',
-        width: '20rem',
+        height: '26rem',
+        width: '23rem',
         borderRadius: '5%',
         boxShadow: '0 2px 5px rgba(0,0,0,0.4)',
         overflowY: 'auto',
@@ -203,17 +236,17 @@ export default function HoveringCart() {
             <h6>Your cart is empty</h6>
           </div>
         ) : (
-          <div>
+          <motion.div>
             {cart.map(renderCartItem)}
             {renderCartSummary()}
-          </div>
+          </motion.div>
         )}
       </div>
     </div>
   );
 
   const renderBasket = () => (
-    <div
+    <motion.div
       className="d-md-block"
       onClick={() => setIsClicked(true)}
       style={{
@@ -226,6 +259,7 @@ export default function HoveringCart() {
         boxShadow: '0 2px 5px rgba(0,0,0,0.4)',
         cursor: 'pointer',
       }}
+      animate={controls}
     >
       <ShoppingBasket />
       <span
@@ -238,7 +272,7 @@ export default function HoveringCart() {
       >
         {totalItems}
       </span>
-    </div>
+    </motion.div>
   );
 
   return <>{isClicked ? renderCard() : renderBasket()}</>;
