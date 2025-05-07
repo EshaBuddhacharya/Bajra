@@ -22,9 +22,16 @@ const Header = () => {
             style={{
               height: '150px',
               width: '155px',
+              '@media (max-width: 768px)': {
+                height: '70px',
+                width: '75px',
+              }
             }}
           />
           <h1 style={{
+            '@media (max-width: 768px)': {
+              fontSize: '1.2rem'
+            }
           }}
           >
             𑐰𑐖𑑂𑐬 <br />𑐥𑐮𑐵

@@ -43,6 +43,11 @@ const SignInpage = () => {
     return isValid;
   };
 
+  const handleGoogleLogin = (e) => {
+    e.preventDefault()
+    toast.success("test")
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(backendBaseUrl) //debugging
@@ -54,17 +59,17 @@ const SignInpage = () => {
 
       }
       catch (error) {
-          toast.error("Error signing in");
+        toast.error("Error signing in", error?.message);
       }
     }
   };
 
   return (
     <>
-     <Header />
-      <div className="container shadow border bg-light" style={{ paddingBottom: "10px", position: "relative", minHeight: "400px", width: "1000px" }}>
-        <form onSubmit={handleSubmit}>
-          <h1 className="h3 mb-3 fw-normal pt-5" style={{ color: "red" }}><b>Please sign in</b></h1>
+      <Header />
+      <div className="container shadow border bg-light" style={{ borderRadius: '2%', paddingBottom: "10px", position: "relative", minHeight: "400px", width: "30rem" }}>
+        <form onSubmit={handleSubmit} className='p-3'>
+          <h1 className="h3 mb-3 fw-normal pt-4 text-center" style={{ color: "" }}><b>Please sign in</b></h1>
 
           <div className="form-floating mb-3">
             <input
@@ -98,13 +103,24 @@ const SignInpage = () => {
             )}
           </div>
 
-          <div className="form-check text-start my-3">
-            <input className="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault" />
-            <label className="form-check-label" htmlFor="flexCheckDefault">Remember me</label>
+          <div className='d-flex justify-content-center '>
+            <button type="submit" className="btn btn-danger me-8" style={{ width: '8rem' }}>Sign in</button>
           </div>
-
-          <button type="submit" className="btn btn-danger me-8" style={{ width: '120px' }}>Sign in</button>
-
+          <div className='d-flex justify-content-center flex-col align-items-center' style={{flexDirection: "column"}}>
+            <div className='mt-3 d-flex align-items-center gap-3' style={{ color: 'gray' }}>
+              <hr style={{ width: '130px' }} />
+              OR
+              <hr style={{ width: '130px' }} />
+            </div>
+            <button 
+              className='d-flex gap-2 m-2 px-4 py-1 rounded-pill align-items-center' 
+              style={{backgroundColor: '#DEE3E8', border: 'none'}}
+              onClick={handleGoogleLogin}
+            >
+              <img src="/images/google_icon.webp" alt="Google Provider" height='40px' width='40px'/>
+              <div className=''>Login with Google</div>
+            </button>
+          </div>
           <div className="d-flex justify-content-between" style={{ paddingTop: "25px" }}>
             <Link to="/registerin" style={{ color: "grey" }}>Create an account?</Link>
             <Link to="/forgotpass" style={{ color: "grey" }}>Forgot Password?</Link>

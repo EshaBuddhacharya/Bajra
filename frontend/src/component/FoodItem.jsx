@@ -2,8 +2,6 @@ import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { motion, useAnimation } from 'framer-motion'; // eslint-disable-line no-unused-vars
-
-import { CartContext } from './CartContext';
 import { AuthContext } from '../contexts/AuthContext';
 
 const FoodItem = ({ name, imgUrl, description, types, desc: portion, addToCart, _id }) => {
@@ -14,7 +12,6 @@ const FoodItem = ({ name, imgUrl, description, types, desc: portion, addToCart, 
   const [selectedType, setSelectedType] = useState(types[0].name);
   const [price, setPrice] = useState(types[0].price);
   const [quantity, setQuantity] = useState(1);
-  const [error, setError] = useState('');
   const controls = useAnimation() // hover effect control for image scale
 
   const { isAuthenticated } = useContext(AuthContext);
@@ -147,8 +144,6 @@ return (
             Add to Cart
           </motion.button>
         </div>
-
-        {error && <p className="text-danger mt-2">{error}</p>}
       </div>
     </motion.div>
   </motion.div>
