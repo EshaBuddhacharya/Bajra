@@ -1,10 +1,12 @@
 import { ShoppingBasket, Minimize2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { useCart } from './CartContext';
 import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 import { Dialog, Button, Flex } from '@radix-ui/themes';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import "../index.css"
 
 export default function HoveringCart() {
   const [isClicked, setIsClicked] = useState(false);
@@ -13,7 +15,7 @@ export default function HoveringCart() {
     deliveryAddress: '',
     additionalInstructions: '',
   });
-
+  const navigate = useNavigate()
   const { cart, removeFromCart, setCart } = useCart();
   const { axiosInstance } = useAuth();
   const controls = useAnimation();
@@ -247,18 +249,8 @@ export default function HoveringCart() {
 
   const renderBasket = () => (
     <motion.div
-      className="d-md-block"
-      onClick={() => setIsClicked(true)}
-      style={{
-        position: 'fixed',
-        bottom: '2rem',
-        right: '3rem',
-        backgroundColor: 'white',
-        padding: '10px',
-        borderRadius: '50%',
-        boxShadow: '0 2px 5px rgba(0,0,0,0.4)',
-        cursor: 'pointer',
-      }}
+      className="d-md-block basket-button"
+      onClick={() => window.innerWidth < 768 ? navigate('/cart') : setIsClicked(true)}
       animate={controls}
     >
       <ShoppingBasket />
