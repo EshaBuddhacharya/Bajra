@@ -13,7 +13,7 @@ const Layout = () => {
     '/confirmm', '/order', '/okpage', '/login'
   ];
   const footerHiddenRoutes = [
-    '/login'
+    '/login', '/admin'
   ];
 
   const hideHeader = headerHiddenRoutes.includes(location.pathname);
