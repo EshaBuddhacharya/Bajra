@@ -129,7 +129,8 @@ export default function AuthProvider({ children }) {
     logout,
     useAuth,
     axiosInstance,
-  }), [user, accessToken, isAuthenticated, authCookie, login, logout, axiosInstance, useAuth]);
+    setIsAuthenticated,
+  }), [user, accessToken, isAuthenticated, setIsAuthenticated, authCookie, login, logout, axiosInstance, useAuth]);
 
 if (loading) return null; // or a spinner
 

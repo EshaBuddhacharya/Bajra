@@ -1,136 +1,183 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
-import Header from '../component/Header';
 import { toast } from 'react-toastify';
+import { auth, provider, signInWithPopup } from '../firebase';
+import Header from '../component/Header';
+import { AuthContext, useAuth } from '../contexts/AuthContext';
+import FurthureSignIn from '../component/FurthureSignIn'
 
-const SignInpage = () => {
+const InputField = ({ id, label, type, value, onChange, error }) => (
+  <div className="form-floating mb-3">
+    <input
+      type={type}
+      className={`form-control ${error ? 'is-invalid' : ''}`}
+      id={id}
+      placeholder={label}
+      value={value}
+      onChange={onChange}
+    />
+    <label htmlFor={id}>{label}</label>
+    {error && <div className="invalid-feedback">{error}</div>}
+  </div>
+);
+
+const OrDivider = () => (
+  <div className="text-center text-secondary mb-2 d-flex align-items-center justify-content-center">
+    <hr className="flex-grow-1" />
+    <span className="px-2">OR</span>
+    <hr className="flex-grow-1" />
+  </div>
+);
+
+const GoogleButton = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    className="d-inline-flex align-items-center px-4 py-2 rounded-pill border-0"
+    style={{ backgroundColor: '#DEE3E8' }}
+  >
+    <img src="/images/google_icon.webp" alt="Google" width="32" height="32" className="me-2" />
+    <span>Login with Google</span>
+  </button>
+);
+
+const FooterLinks = () => (
+  <div className="d-flex justify-content-between mt-4">
+    <Link to="/registerin" className="text-secondary">
+      Create account?
+    </Link>
+    <Link to="/forgotpass" className="text-secondary">
+      Forgot Password?
+    </Link>
+  </div>
+);
+
+const SignInForm = ({ email, setEmail, password, setPassword, errors, handleSubmit, handleGoogleLogin }) => (
+  <div className="container shadow border bg-light rounded-2 p-4" style={{ maxWidth: '30rem', minHeight: '400px' }}>
+    <form onSubmit={handleSubmit} noValidate>
+      <h1 className="h3 mb-4 text-center"><b>Please sign in</b></h1>
+
+      <InputField
+        id="floatingInput"
+        label="Email address"
+        type="email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        error={errors.email}
+      />
+
+      <InputField
+        id="floatingPassword"
+        label="Password"
+        type="password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        error={errors.password}
+      />
+
+      <div className="d-flex justify-content-center mb-3">
+        <button type="submit" className="btn btn-danger" style={{ width: '8rem' }}>
+          Sign in
+        </button>
+      </div>
+
+      <OrDivider />
+
+      <div className="text-center">
+        <GoogleButton onClick={handleGoogleLogin} />
+      </div>
+
+      <FooterLinks />
+    </form>
+  </div>
+);
+
+const SignInPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [isFurthureSignIn, setIsFurthureSignIn] = useState(false);
+  const [authToken, setAuthToken] = useState();
+  const [refreshToken, setRefreshToken] = useState();
   const navigate = useNavigate();
-  const backendBaseUrl = import.meta.env.REACT_APP_BACKEND_BASE_URL;
-  const { login } = useContext(AuthContext)
+  const { login } = useContext(AuthContext);
+  const { axiosInstance, setIsAuthenticated } = useAuth();
 
-  const validateForm = () => {
-    let errors = {};
-    let isValid = true;
-    let passwordErrors = [];
+  const validate = useCallback(() => {
+    const errs = {};
+    if (!email) errs.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      errs.email = 'Invalid email format';
 
-    if (!email) {
-      errors.email = 'Email is required';
-      isValid = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errors.email = 'Invalid email format';
-      isValid = false;
+    const pw = [];
+    if (!password) pw.push('Password is required');
+    else if (password.length < 8)
+      pw.push('Password must be at least 8 characters');
+    if (pw.length) errs.password = pw.join(', ');
+
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  }, [email, password]);
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    if (!validate()) return;
+    try {
+      await login(email, password);
+      navigate('/showitems');
+    } catch (err) {
+      toast.error(err.message || 'Sign-in failed');
     }
-
-    if (!password) {
-      passwordErrors.push('Password is required');
-      isValid = false;
-    } else {
-      if (password.length < 8) {
-        passwordErrors.push('Password must be at least 8 characters long');
-      }
-
-    }
-    if (passwordErrors.length > 0) {
-      errors.password = passwordErrors;
-      isValid = false;
-    }
-
-    setErrors(errors);
-    return isValid;
   };
 
-  const handleGoogleLogin = (e) => {
-    e.preventDefault()
-    toast.success("test")
-  }
-
-  const handleSubmit = async (e) => {
+  const handleGoogleLogin = async e => {
     e.preventDefault();
-    console.log(backendBaseUrl) //debugging
-    if (validateForm()) {
-      try {
-        await login(email, password)
-        console.log("Logged in successfully") // debugging
-        navigate('/showitems'); // Navigate to the Cart page if validation passes
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const firebaseUser = result.user;
+      const idToken = await firebaseUser.getIdToken();
+      const refreshToken = firebaseUser.refreshToken;
+      setAuthToken(idToken);
+      setRefreshToken(refreshToken);
 
+      try {
+        await axiosInstance.post(
+          '/api/auth/loginWithGoogle',
+          { authToken: idToken, refreshToken }
+        );
+        setIsAuthenticated(true)
+        navigate('/showItems');
+      } catch (error) {
+        if (error.response?.status === 400) {
+          setIsFurthureSignIn(true);
+        } else {
+          toast.error('An error occurred during Google login');
+        }
       }
-      catch (error) {
-        toast.error("Error signing in", error?.message);
-      }
+    } catch (err) {
+      console.error('Google login error:', err);
+      toast.error(err.message || 'Google sign-in failed');
     }
   };
 
   return (
     <>
       <Header />
-      <div className="container shadow border bg-light" style={{ borderRadius: '2%', paddingBottom: "10px", position: "relative", minHeight: "400px", width: "30rem" }}>
-        <form onSubmit={handleSubmit} className='p-3'>
-          <h1 className="h3 mb-3 fw-normal pt-4 text-center" style={{ color: "" }}><b>Please sign in</b></h1>
-
-          <div className="form-floating mb-3">
-            <input
-              type="email"
-              className="form-control"
-              id="floatingInput"
-              placeholder="name@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label htmlFor="floatingInput">Email address</label>
-            {errors.email && <small className="text-danger">{errors.email}</small>}
-          </div>
-
-          <div className="form-floating mb-3">
-            <input
-              type="password"
-              className="form-control"
-              id="floatingPassword"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <label htmlFor="floatingPassword">Password</label>
-            {errors.password && (
-              <div className="text-danger">
-                {errors.password.map((error, index) => (
-                  <p key={index}>{error}</p>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className='d-flex justify-content-center '>
-            <button type="submit" className="btn btn-danger me-8" style={{ width: '8rem' }}>Sign in</button>
-          </div>
-          <div className='d-flex justify-content-center flex-col align-items-center' style={{flexDirection: "column"}}>
-            <div className='mt-3 d-flex align-items-center gap-3' style={{ color: 'gray' }}>
-              <hr style={{ width: '130px' }} />
-              OR
-              <hr style={{ width: '130px' }} />
-            </div>
-            <button 
-              className='d-flex gap-2 m-2 px-4 py-1 rounded-pill align-items-center' 
-              style={{backgroundColor: '#DEE3E8', border: 'none'}}
-              onClick={handleGoogleLogin}
-            >
-              <img src="/images/google_icon.webp" alt="Google Provider" height='40px' width='40px'/>
-              <div className=''>Login with Google</div>
-            </button>
-          </div>
-          <div className="d-flex justify-content-between" style={{ paddingTop: "25px" }}>
-            <Link to="/registerin" style={{ color: "grey" }}>Create an account?</Link>
-            <Link to="/forgotpass" style={{ color: "grey" }}>Forgot Password?</Link>
-          </div>
-        </form>
-      </div>
+      {isFurthureSignIn && (
+        <FurthureSignIn authToken={authToken} refreshToken={refreshToken} />
+      )}
+      {!isFurthureSignIn && (
+        <SignInForm
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          errors={errors}
+          handleSubmit={handleSubmit}
+          handleGoogleLogin={handleGoogleLogin}
+        />
+      )}
     </>
   );
 };
 
-export default SignInpage;
-
-
+export default SignInPage;

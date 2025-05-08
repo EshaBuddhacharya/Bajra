@@ -21,7 +21,9 @@ const Homepagee = () => {
           }}
         >
           <Header />
-          <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', flexGrow: '1', gap: '10px' }}>
+          <div 
+            id = 'hero' 
+            style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', flexGrow: '1', gap: '10px' }}>
             <span style={{ fontSize: '2rem', fontWeight: '500' }}>
               Authentic Newari Cuisine, <br />Just a click away
             </span>

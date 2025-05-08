@@ -20,7 +20,6 @@ import Orderri from './pagee/Orderri';
 import OrderPage from './pagee/OrderPage'
 import Ok from './pagee/Ok';
 
-
 const Myroute = () => {
   return (
     <Router>

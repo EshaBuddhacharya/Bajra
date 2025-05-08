@@ -2,6 +2,7 @@ const admin = require("../firebase/firebaseAdmin");
 const User = require("../models/users");
 const axios = require("axios")
 
+
 const registerController = async (req, res) => {
   try {
     // Verify admin is initialized
@@ -64,10 +65,10 @@ const registerController = async (req, res) => {
     });
   }
   // Performing automatic login
-  const FIREBASE_API_KEY=process.env.FIREBASE_API_KEY
+  const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY
   // api key check 
-  if(!FIREBASE_API_KEY){ 
-    res.status(500).send({error: "No api key found"})
+  if (!FIREBASE_API_KEY) {
+    res.status(500).send({ error: "No api key found" })
   }
 
   // getting token from firebase 
@@ -81,12 +82,12 @@ const registerController = async (req, res) => {
 
     const { idToken, refreshToken, expiresIn, localId } = response.data;
 
-     // saving access token
-     res.cookie('loginToken', idToken, {
+    // saving access token
+    res.cookie('loginToken', idToken, {
       httpOnly: true,      // not accessible via JavaScript
       secure: process.env.NODE_ENV === 'production', // secure true only in production,        // send only over HTTPS
       sameSite: 'Strict',  // protect against CSRF
-      maxAge: 24 * 60 * 60 * 1000 
+      maxAge: 24 * 60 * 60 * 1000
     });
 
     // saving refresh token
@@ -115,18 +116,18 @@ const registerController = async (req, res) => {
 
 
 const signInController = async (req, res) => {
-  const { email, password} = req.body
+  const { email, password } = req.body
   const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY
 
   // api key check 
-  if(!FIREBASE_API_KEY){ 
-    res.status(500).send({error: "No api key found"})
+  if (!FIREBASE_API_KEY) {
+    res.status(500).send({ error: "No api key found" })
   }
   // validating 
-  if(!email || !password){
-    res.status(400).send({error: "email and password is required"})
+  if (!email || !password) {
+    res.status(400).send({ error: "email and password is required" })
   }
-  
+
   // getting token from firebase 
   try {
     const response = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
@@ -142,7 +143,7 @@ const signInController = async (req, res) => {
       httpOnly: true,      // not accessible via JavaScript
       secure: process.env.NODE_ENV === 'production', // secure true only in production,        // send only over HTTPS
       sameSite: 'Strict',  // protect against CSRF
-      maxAge: 24 * 60 * 60 * 1000 
+      maxAge: 24 * 60 * 60 * 1000
     });
 
     // saving refresh token
@@ -168,10 +169,10 @@ const signInController = async (req, res) => {
   }
 }
 
-const isAuthenticatedController = async (req, res) => { 
+const isAuthenticatedController = async (req, res) => {
   // extracting token 
-  const authToken = req.cookies.loginToken;
-  
+  const authToken = req.cookies.loginToken || req.body?.authToken;
+
   if (!authToken) {
     return res.status(401).send({ error: "No authentication token found" });
   }
@@ -179,11 +180,22 @@ const isAuthenticatedController = async (req, res) => {
   try {
     // Verify the token using Firebase Admin
     const decodedToken = await admin.auth().verifyIdToken(authToken);
-    
-    // Token is valid
+
+    // Find user in database
+    const user = await User.findOne({ firebaseUid: decodedToken.uid });
+
+    if (!user) {
+      return res.status(404).send({
+        authenticated: false,
+        error: "User not found in database"
+      });
+    }
+
+    // Token is valid and user exists
     return res.status(200).send({
       authenticated: true,
-      uid: decodedToken.uid
+      uid: decodedToken.uid,
+      user: user
     });
   } catch (error) {
     console.error('Error verifying token:', error);
@@ -261,10 +273,76 @@ const refreshTokenController = async (req, res) => {
   }
 };
 
+const loginWithGoogle = async (req, res) => {
+  try {
+    const { authToken, refreshToken, name, address, phoneNumber } = req.body;
+
+    if (!authToken) {
+      return res.status(401).json({ error: "Authentication token is required" });
+    }
+
+    // Verify token and get user
+    const decodedToken = await admin.auth().verifyIdToken(authToken);
+    let user;
+    try {
+      user = await User.findOne({ firebaseUid: decodedToken.user_id });
+    } catch (error) {
+      console.error('Error finding user:', error);
+      user = false;
+    }
+
+    // Create new user if doesn't exist
+    if (!user) {
+      if (!name || !address || !phoneNumber) {
+        return res.status(400).json({
+          error: "Missing required fields",
+          details: "Name, address and phone number are required"
+        });
+      }
+
+      user = await User.create({
+        firebaseUid: decodedToken.uid,
+        name,
+        address,
+        phone: phoneNumber
+      });
+    }
+    // Update the cookie with new ID token
+    res.cookie('loginToken', authToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      maxAge: 24 * 7 * 60 * 60 * 1000 // 1 week
+    });
+
+    // Update the cookie with new ID token
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      maxAge: 30 * 24 * 7 * 60 * 60 * 1000 // 1 week
+    });
+
+    return res.status(200).json({
+      authenticated: true,
+      uid: decodedToken.uid,
+      user
+    });
+
+  } catch (error) {
+    console.error('Google login error:', error);
+    return res.status(401).json({
+      authenticated: false,
+      error: "Authentication failed"
+    });
+  }
+};
+
 module.exports = {
   registerController,
   signInController,
   isAuthenticatedController,
   logoutController,
-  refreshTokenController
+  refreshTokenController,
+  loginWithGoogle
 };
