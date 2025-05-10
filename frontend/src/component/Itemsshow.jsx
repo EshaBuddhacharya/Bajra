@@ -19,12 +19,13 @@ const Itemsshow = () => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/menu/getItems`)
       .then((response) => {
-        setMenuData(response.data);
-        setIsLoading(false);
+      setMenuData(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching menu items:", error);
-        setIsLoading(false);
+      console.error("Error fetching menu items:", error);
+      })
+      .finally(() => {
+      setIsLoading(false);
       });
   }, []);
 

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 
 const Footer = () => {
   const { isAuthenticated, axiosInstance } = useAuth();
-  const [feedback, setFeedback] = useState(null);
+  const [feedback, setFeedback] = useState('w');
 
   // handles feedback submit 
   const feedbackSubmit = async (e) => {

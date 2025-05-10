@@ -23,14 +23,14 @@ Header = () => {
             style={{
               height: '150px',
               width: '155px',
-              '@media (max-width: 768px)': {
+              '@media (maxWidth: 768px)': {
                 height: '70px',
                 width: '75px',
               }
             }}
           />
           <h1 style={{
-            '@media (max-width: 768px)': {
+            '@media (maxWidth: 768px)': {
               fontSize: '1.2rem'
             }
           }}

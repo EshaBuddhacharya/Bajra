@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import '../App.css';
 import { LogOut, Coffee, ShoppingBag, LayoutDashboard } from 'lucide-react';
+import { motion } from 'framer-motion'
 
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -28,7 +29,10 @@ const Sidebar = () => {
         <>
             <div style={{ width: collapsed ? '80px' : '250px', height: '100vh' }} className='sidebar'/>
 
-            <div
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
                 className={`d-flex flex-column sidebar p-3 ${collapsed ? 'collapsed' : ''}`}
                 style={{ width: collapsed ? '80px' : '250px', height: '100vh', position: 'fixed', top: 0, left: 0 }}
             >
@@ -38,14 +42,19 @@ const Sidebar = () => {
                     to='/'
                 >
                     {!collapsed && (
-                        <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                            className='d-flex gap-3 align-items-center'
+                        >
                             <img
                                 src="/images/b.png"
                                 alt="brand logo"
                                 style={{ height: '60px', width: '60px' }}
                             />
                             <h1>𑐰𑐖𑑂𑐬 <br />𑐥𑐮𑐵</h1>
-                        </>)
+                        </motion.div>)
                     }
                 </Link>
                 <button
@@ -55,7 +64,12 @@ const Sidebar = () => {
                 >
                     {collapsed ? '☰' : <LogOut size={21} />}
                 </button>
-                <ul className="nav nav-pills flex-column mb-auto gap-2">
+                <motion.ul 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="nav nav-pills flex-column mb-auto gap-2"
+                >
                     <li>
                         <NavLink to="dashboard"
                             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
@@ -88,8 +102,8 @@ const Sidebar = () => {
                             )}
                         </NavLink>
                     </li>
-                </ul>
-            </div>
+                </motion.ul>
+            </motion.div>
         </>);
 };
 

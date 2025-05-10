@@ -1,8 +1,10 @@
 const express = require('express')
-const { insertItem, getItems } = require("../controllers/menuController")
+const menuController = require("../controllers/menuController")
 
 const router = express.Router()
 
-router.post("/insertItem", insertItem)
-router.get('/getItems', getItems)
+router.post("/insertItem", menuController.insertItem)
+router.get('/getItems', menuController.getItems)
+router.get('/getCategories', menuController.getCategories)
+
 module.exports = router;

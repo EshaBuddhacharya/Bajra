@@ -32,7 +32,19 @@ const insertItem = (req, res) => {
     }
 }
 
+const getCategories = async (req, res) => { 
+    try { 
+        const distinctCategories = await menu.distinct('category')
+        return res.send({categories: distinctCategories})
+    }
+    catch (error) { 
+        return res.status(500).send({message: "Error fetching distinct category from database"})
+    }
+}
+
+
 module.exports = {
     getItems,
-    insertItem
+    insertItem,
+    getCategories
 }
