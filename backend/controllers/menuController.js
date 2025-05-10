@@ -42,9 +42,26 @@ const getCategories = async (req, res) => {
     }
 }
 
+const deleteItem = async (req, res) => {
+    console.log("DELETE /api/menu/deleteItem")
+    // extracting order_id
+    const menu_id = req.params.id;
+
+    try { 
+        const result = await menu.deleteOne({_id: menu_id});
+        if (result.deletedCount === 0) {
+            return res.status(404).send("Order not found");
+        }
+        return res.send("Order deleted successfully");
+    }
+    catch (error) { 
+        return res.status(500).send("Error deleting order");
+    }
+}
 
 module.exports = {
     getItems,
     insertItem,
-    getCategories
+    getCategories,
+    deleteItem
 }

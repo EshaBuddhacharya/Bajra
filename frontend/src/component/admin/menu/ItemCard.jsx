@@ -1,10 +1,103 @@
 import PropTypes from 'prop-types';
 import { motion, useAnimation } from 'framer-motion';
-import { Card, Box, Text, Skeleton } from '@radix-ui/themes';
+import { Card, Box, Text, Skeleton, Button, RadioCards, Flex } from '@radix-ui/themes';
+import { SquarePen, Trash2 } from 'lucide-react'
+import { useState } from 'react'
 
-const FoodItem = ({ name, imgUrl, description, types, portion, _id, index }) => {
+const FoodItem = ({ name, imgUrl, description, types, portion, _id, index, handleDelete }) => {
     const imageSrc = `${import.meta.env.VITE_BACKEND_BASE_URL}${imgUrl}`;
+    const [selectedType, setSelectedType] = useState(types[0]?.name)
     const controls = useAnimation();
+
+    const ItemImage = ({ imageSrc, name, controls }) => (
+        <div style={{
+            width: '100%',
+            height: '200px',
+            overflow: 'hidden',
+            borderRadius: '8px 8px 0 0'
+        }}>
+            <motion.img
+                src={imageSrc}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                }}
+                animate={controls}
+                alt={name}
+            />
+        </div>
+    );
+
+    const ItemDetails = ({ name, description, portion }) => (
+        <Box p="3">
+            <Text as="div" size="7" weight="bold" mb="2">
+                {name}
+            </Text>
+            {description && (
+                <Text as="div" size="2" color="gray" mb="2">
+                    {description}
+                </Text>
+            )}
+            {portion && (
+                <Text as="div" size="2" weight="bold">
+                    {portion}
+                </Text>
+            )}
+        </Box>
+    );
+
+    const ActionButtons = () => (
+        <div style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            gap: '1rem',
+            width: '100%'
+        }}>
+            <Button variant="soft" color='gray' highContrast><SquarePen size={16} /> Edit</Button>
+            <Button variant="soft" color='gray' highContrast><Trash2 size={16} onClick={handleDelete} /> Delete</Button>
+        </div>
+    );
+    const TypesRadio = ({ types, setSelectedType }) => {
+        if (!types) {
+            return
+        }
+        return (
+            <Box flexGrow='1' className='mb-3'>
+                <RadioCards.Root
+                    defaultValue={types[0]?.name}
+                    onValueChange={(value) => setSelectedType(value)}
+                    value={selectedType}
+                    columns={{ initial: "1", sm: "3" }}
+                    gap='2'
+                    color='gray'
+                    size='1'
+                >
+                    {types.map((type) => (
+                        <RadioCards.Item key={type.name} value={type.name}>
+                            <Flex direction="column" width="100%">
+                                <Text weight="semibold" size={2}>{type.name}</Text>
+                                {/* <Text weight="semibold" size={1}>Rs. {type.price}</Text> */}
+                            </Flex>
+                        </RadioCards.Item>
+                    ))}
+                </RadioCards.Root>
+            </Box>
+        )
+    };
+
+    const TypePrice = ({ selectedType, typeList }) => {
+        const price = typeList.find(type => type.name === selectedType)?.price;
+
+        return (
+            <Flex justify={'end'} minWidth={'80px'} className='mb-2'>
+                <Text size='7' weight='bold'>
+                    $ {price}
+                </Text>
+            </Flex>
+        )
+    }
 
     return (
         <motion.div
@@ -14,46 +107,22 @@ const FoodItem = ({ name, imgUrl, description, types, portion, _id, index }) => 
             exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
             transition={{ duration: 0.3 }}
             layout
+            style={{ position: 'relative' }}
         >
-            <Box maxWidth="300px">
-                <Card>
+            <Box maxWidth="500px">
+                <Card className='p-3 d-flex flex-column gap-3' style={{ flexDirection: 'column' }}>
                     <motion.div
                         onHoverStart={() => controls.start({ scale: 1.05 })}
                         onHoverEnd={() => controls.start({ scale: 1 })}
                     >
-                        <div style={{
-                            width: '100%',
-                            height: '200px',
-                            overflow: 'hidden',
-                            borderRadius: '8px 8px 0 0'
-                        }}>
-                            <motion.img
-                                src={imageSrc}
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
-                                }}
-                                animate={controls}
-                                alt={name}
-                            />
-                        </div>
-                        <Box p="3">
-                            <Text as="div" size="5" weight="bold" mb="2">
-                                {name}
-                            </Text>
-                            {description && (
-                                <Text as="div" size="2" color="gray" mb="2">
-                                    {description}
-                                </Text>
-                            )}
-                            {portion && (
-                                <Text as="div" size="2" weight="bold">
-                                    {portion}
-                                </Text>
-                            )}
-                        </Box>
+                        <ItemDetails name={name} description={description} portion={portion} />
+                        <ItemImage imageSrc={imageSrc} name={name} controls={controls} />
                     </motion.div>
+                    <Flex justify={'between'} gap='5'>
+                        <TypesRadio types={types} setSelectedType={setSelectedType} />
+                        <TypePrice selectedType={selectedType} typeList={types} />
+                    </Flex>
+                    <ActionButtons />
                 </Card>
             </Box>
         </motion.div>
@@ -62,7 +131,7 @@ const FoodItem = ({ name, imgUrl, description, types, portion, _id, index }) => 
 
 export const SkeletonFoodItem = () => {
     return (
-        <Box maxWidth="300px">
+        <Box maxWidth="500px">
             <Card>
                 <div style={{
                     width: '100%',
