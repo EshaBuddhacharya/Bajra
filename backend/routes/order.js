@@ -1,4 +1,4 @@
-const verifyFirebaseToken  = require("../firebase/authMiddleware")
+const {verifyFirebaseToken, verifyAdminToken}  = require("../firebase/authMiddleware")
 const express = require('express')
 const orderController = require("../controllers/orderController")
 const router = express.Router(); 

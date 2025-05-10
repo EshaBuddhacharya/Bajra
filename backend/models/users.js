@@ -27,6 +27,11 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  role: {
+    type: String,
+    enum: ['admin, customer'],
+    default: 'customer'
+  }
 });
 
 // Update updatedAt field on save
