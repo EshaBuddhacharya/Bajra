@@ -11,12 +11,12 @@ import './App.css';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <CartProvider>
-        <Theme accentColor="red">
-          <App />
-        </Theme>
-      </CartProvider>
-    </AuthProvider>
+      <AuthProvider>
+        <CartProvider>
+          <Theme accentColor="red">
+            <App />
+          </Theme>
+        </CartProvider>
+      </AuthProvider>
   </React.StrictMode>
 );

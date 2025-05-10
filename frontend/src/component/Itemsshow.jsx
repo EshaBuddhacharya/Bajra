@@ -64,16 +64,7 @@ const Itemsshow = () => {
       <motion.div className="row row-cols-1 row-cols-md-3 py-2 g-4 mx-md-4 m-0">
         {filteredItems.length > 0 ? (
           filteredItems.map((item, index) => (
-            <motion.div
-              key={item.id || index} // Prefer item.id for uniqueness, fallback to index
-              initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }} // Start blurred and scaled down
-              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }} // Remove blur and scale up
-              exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
-              transition={{ duration: 0.3 }} // Animation duration of 0.3 seconds
-              layout // Enable layout animations for this item
-            >
-              <FoodItem {...item} addToCart={addToCart} />
-            </motion.div>
+            <FoodItem {...item} index={index} addToCart={addToCart} />
           ))
         ) : (
           renderNoResults()

@@ -5,7 +5,7 @@ export default function AdminLayout() {
     return (
         <div className='d-flex w-100 h-100'>
             <Sidebar />
-            <main>
+            <main className='flex-grow-1'>
                 <Outlet></Outlet>
             </main>
         </div>

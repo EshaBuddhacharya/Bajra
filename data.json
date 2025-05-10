@@ -1,0 +1,109 @@
+[
+    {
+        "_id": "68166c518bbcc00b00313050",
+        "items": [
+            {
+                "selectedType": {
+                    "name": "Plain",
+                    "price": 100
+                },
+                "menuItem": {
+                    "_id": "6810eac695a4bebcec961a6f",
+                    "name": "Tho",
+                    "description": "Tho is a traditional alcoholic beverage made from fermented rice, milky, slightly sweet, and mildly alcoholic drink.",
+                    "category": "Beverage",
+                    "portion": "Per litre 100",
+                    "imgUrl": "/media/images/tho.jpg",
+                    "types": [
+                        {
+                            "name": "Plain",
+                            "price": 100,
+                            "_id": "6810eac695a4bebcec961a70"
+                        }
+                    ],
+                    "__v": 0,
+                    "id": "6810eac695a4bebcec961a6f"
+                },
+                "quantity": 1,
+                "_id": "68166c518bbcc00b00313051"
+            },
+            {
+                "selectedType": {
+                    "name": "Buff",
+                    "price": 180
+                },
+                "menuItem": {
+                    "_id": "6810eac595a4bebcec961a1f",
+                    "name": "Choila",
+                    "description": "A spicy and flavorful dish made with marinated meat, served with rice.",
+                    "category": "Nonveg",
+                    "portion": "8 pieces per plate",
+                    "imgUrl": "/media/images/Buffchoila.jpg",
+                    "types": [
+                        {
+                            "name": "Buff",
+                            "price": 180,
+                            "_id": "6810eac595a4bebcec961a20"
+                        },
+                        {
+                            "name": "Chicken",
+                            "price": 200,
+                            "_id": "6810eac595a4bebcec961a21"
+                        },
+                        {
+                            "name": "Pork",
+                            "price": 220,
+                            "_id": "6810eac595a4bebcec961a22"
+                        }
+                    ],
+                    "__v": 0,
+                    "id": "6810eac595a4bebcec961a1f"
+                },
+                "quantity": 1,
+                "_id": "68166c518bbcc00b00313052"
+            },
+            {
+                "selectedType": {
+                    "name": "Goat",
+                    "price": 150
+                },
+                "menuItem": {
+                    "_id": "6810eac695a4bebcec961a3e",
+                    "name": "Bhutan",
+                    "description": "The goat meat is deep-fried until crispy, then seasoned with Newari achar masala.",
+                    "category": "Nonveg",
+                    "portion": "10 pieces per plate",
+                    "imgUrl": "/media/images/bhutan.png",
+                    "types": [
+                        {
+                            "name": "Goat",
+                            "price": 150,
+                            "_id": "6810eac695a4bebcec961a3f"
+                        }
+                    ],
+                    "__v": 0,
+                    "id": "6810eac695a4bebcec961a3e"
+                },
+                "quantity": 1,
+                "_id": "68166c518bbcc00b00313053"
+            }
+        ],
+        "user": {
+            "_id": "6812493caf6a143bb710d756",
+            "firebaseUid": "23eWjXFqhpgXtbAGc2zAPyLpcSg2",
+            "name": "test",
+            "phone": "34r34cvcveer6653",
+            "address": "12",
+            "createdAt": "2025-04-30T16:01:00.208Z",
+            "updatedAt": "2025-04-30T16:01:00.215Z",
+            "__v": 0
+        },
+        "deliveryLocation": "Tripureshwor",
+        "additionalInstructions": "",
+        "orderStatus": "canceled",
+        "createdAt": "2025-05-03T19:19:45.997Z",
+        "__v": 0,
+        "total": 430,
+        "id": "68166c518bbcc00b00313050"
+    }
+]
