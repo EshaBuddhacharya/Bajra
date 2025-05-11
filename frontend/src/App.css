@@ -68,6 +68,38 @@
  
 }
 
+/* sidebar */
+.sidebar {
+  background-color: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  transition: all 0.3s;
+}
+
+.sidebar .nav-link {
+  color: #333; /* Text stays dark */
+  border-radius: 4px;
+}
 
 
+/* Hover effect: background becomes accent, text stays default */
+.sidebar .nav-link:hover {
+  background-color: #DC3545;
+  color: white !important;
+}
 
+/* Active link: background is accent, text stays default */
+.sidebar .nav-link.active {
+  background-color: #DC3545 !important;
+  color: white !important;
+}
+
+.btn-toggle {
+  background-color: #DC3545;
+  color: white;
+  border: none;
+  margin: 10px;
+}
+
+.btn-toggle:hover {
+  background-color: #bb2d3b;
+}

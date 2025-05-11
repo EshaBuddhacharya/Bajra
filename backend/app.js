@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const verifyFirebaseToken = require("./firebase/authMiddleware");
+const {verifyFirebaseToken} = require("./firebase/authMiddleware");
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const path = require('path');

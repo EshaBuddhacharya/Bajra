@@ -10,10 +10,10 @@ const Layout = () => {
   const headerHiddenRoutes = [
     '/showitems', '/veg', '/nonveg', '/drinks', '/desserts', 
     '/feastpacks', '/view', '/ordersum', '/confirm', '/cart', 
-    '/confirmm', '/order', '/okpage', '/login'
+    '/confirmm', '/order', '/okpage', '/login', '/playground'
   ];
   const footerHiddenRoutes = [
-    '/login'
+    '/login', '/admin', '/playground'
   ];
 
   const hideHeader = headerHiddenRoutes.includes(location.pathname);

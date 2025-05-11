@@ -1,0 +1,721 @@
+[{
+  "_id": {
+    "$oid": "6810eac595a4bebcec961a1f"
+  },
+  "name": "Choila",
+  "description": "A spicy and flavorful dish made with marinated meat, served with rice.",
+  "category": "Nonveg",
+  "portion": "8 pieces per plate",
+  "imgUrl": "/media/images/Buffchoila.jpg",
+  "types": [
+    {
+      "name": "Buff",
+      "price": 180,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a20"
+      }
+    },
+    {
+      "name": "Chicken",
+      "price": 200,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a21"
+      }
+    },
+    {
+      "name": "Pork",
+      "price": 220,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a22"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac595a4bebcec961a24"
+  },
+  "name": "Kachila",
+  "description": "A traditional raw minced meat dish mixed with spices and herbs.",
+  "category": "Nonveg",
+  "portion": "",
+  "imgUrl": "/media/images/kachila.jpg",
+  "types": [
+    {
+      "name": "Buff",
+      "price": 180,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a25"
+      }
+    },
+    {
+      "name": "Chicken",
+      "price": 200,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a26"
+      }
+    },
+    {
+      "name": "Pork",
+      "price": 220,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a27"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac595a4bebcec961a29"
+  },
+  "name": "Dyaakula",
+  "description": "A flavorful stew made from slow-cooked meat.",
+  "category": "Nonveg",
+  "portion": "1 bowl : 4 pieces of meat",
+  "imgUrl": "/media/images/dyaakula.jpg",
+  "types": [
+    {
+      "name": "Buff",
+      "price": 250,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a2a"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac595a4bebcec961a2c"
+  },
+  "name": "Sekuwa",
+  "description": "Grilled meat marinated with spices, usually served with chutney.",
+  "category": "Nonveg",
+  "portion": "6 pieces per stick",
+  "imgUrl": "/media/images/sekuwa.jpg",
+  "types": [
+    {
+      "name": "Buff",
+      "price": 40,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a2d"
+      }
+    },
+    {
+      "name": "Chicken",
+      "price": 60,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a2e"
+      }
+    },
+    {
+      "name": "Pork",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a2f"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac595a4bebcec961a31"
+  },
+  "name": "Meatball(Laapichaa)",
+  "description": "Newari-style meatballs made from minced meat and spices.",
+  "category": "Nonveg",
+  "portion": "5 pieces per plate",
+  "imgUrl": "/media/images/Meatball.jpg",
+  "types": [
+    {
+      "name": "Buff",
+      "price": 250,
+      "_id": {
+        "$oid": "6810eac595a4bebcec961a32"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a34"
+  },
+  "name": "Sapubhichaa",
+  "description": "Tender marinated buffalo or goat meat cooked with aromatic spices for a rich, savory taste.",
+  "category": "Nonveg",
+  "portion": "5 pieces per plate",
+  "imgUrl": "/media/images/sapu.jpg",
+  "types": [
+    {
+      "name": "Buff",
+      "price": 250,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a35"
+      }
+    },
+    {
+      "name": "Goat",
+      "price": 250,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a36"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a38"
+  },
+  "name": "Takha",
+  "description": "Nepali dish made from boiled meat, mixed with a tangy, spiced yogurt-based gravy, perfect for a refreshing and flavorful meal.",
+  "category": "Nonveg",
+  "portion": "",
+  "imgUrl": "/media/images/takha.webp",
+  "types": [
+    {
+      "name": "Buff",
+      "price": 150,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a39"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a3b"
+  },
+  "name": "FishFry",
+  "description": "Crispy, golden-brown fried fish fillets seasoned with a blend of spices, perfect for a savory, crunchy delight.",
+  "category": "Nonveg",
+  "portion": "5 pieces per plate",
+  "imgUrl": "/media/images/fishfry.jpg",
+  "types": [
+    {
+      "name": "Mackerel",
+      "price": 300,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a3c"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a3e"
+  },
+  "name": "Bhutan",
+  "description": "The goat meat is deep-fried until crispy, then seasoned with Newari achar masala.",
+  "category": "Nonveg",
+  "portion": "10 pieces per plate",
+  "imgUrl": "/media/images/bhutan.png",
+  "types": [
+    {
+      "name": "Goat",
+      "price": 150,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a3f"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a41"
+  },
+  "name": "Mushroom Choila",
+  "description": "Mushroom Choila is marinated in a blend of aromatic spices, mustard oil, garlic, and ginger, then grilled or pan-fried to perfection.",
+  "category": "Veg",
+  "portion": "",
+  "imgUrl": "/media/images/mushroom.jpg",
+  "types": [
+    {
+      "name": "Mushroom",
+      "price": 180,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a42"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a44"
+  },
+  "name": "Wo",
+  "description": "Roti made in Newari style using Lentils.",
+  "category": "Veg",
+  "portion": "",
+  "imgUrl": "/media/images/wo.jpg",
+  "types": [
+    {
+      "name": "Lentils",
+      "price": 40,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a45"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a47"
+  },
+  "name": "Chatamari",
+  "description": "Thin roti made in Newari style using rice flour.",
+  "category": "Nonveg",
+  "portion": "",
+  "imgUrl": "/media/images/chatamari.webp",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 40,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a48"
+      }
+    },
+    {
+      "name": "With egg",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a49"
+      }
+    },
+    {
+      "name": "With meat",
+      "price": 100,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a4a"
+      }
+    },
+    {
+      "name": "With egg and meat",
+      "price": 150,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a4b"
+      }
+    },
+    {
+      "name": "Mix",
+      "price": 180,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a4c"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a4e"
+  },
+  "name": "Aalu Tama",
+  "description": "Nepali dish made with potatoes (Aalu) and bamboo shoots (Tama).",
+  "category": "Veg",
+  "portion": "",
+  "imgUrl": "/media/images/aalutama.jpg",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 40,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a4f"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a51"
+  },
+  "name": "Bhatmas And Gundruk Sadeko",
+  "description": "This dish features roasted soybeans mixed with gundruk, spices, and herbs, offering a crunchy and savory snack.",
+  "category": "Veg",
+  "portion": "",
+  "imgUrl": "/media/images/bhatmas.jpg",
+  "types": [
+    {
+      "name": "Bhatmas",
+      "price": 50,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a52"
+      }
+    },
+    {
+      "name": "Gundruk",
+      "price": 50,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a53"
+      }
+    },
+    {
+      "name": "Both",
+      "price": 100,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a54"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a56"
+  },
+  "name": "Kwati",
+  "description": "Soup made from a mix of sprouted beans, including lentils, peas, and soybeans. It’s usually spiced with garlic, ginger, and local herbs, making it a wholesome and nutritious dish.",
+  "category": "Veg",
+  "portion": "",
+  "imgUrl": "/media/images/kwati.jpg",
+  "types": [
+    {
+      "name": "Mixed beans",
+      "price": 150,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a57"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a59"
+  },
+  "name": "Laalmon",
+  "description": "Laalmon is a deep-fried, sugar-soaked sweet similar to Rasbari but with a firmer texture and a deep reddish-brown color.",
+  "category": "Desserts",
+  "portion": "",
+  "imgUrl": "/media/images/Laalmon.jpeg",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 50,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a5a"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a5c"
+  },
+  "name": "Rasbari",
+  "description": "Rasbari is a soft, spongy, and syrup-soaked milk-based sweet, similar to the Indian Rasgulla.",
+  "category": "Desserts",
+  "portion": "",
+  "imgUrl": "/media/images/rasbari.jpg",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a5d"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a5f"
+  },
+  "name": "Barfi",
+  "description": "Barfi is a dense, milk-based sweet that comes in various flavors, such as coconut, chocolate, and pistachio.",
+  "category": "Desserts",
+  "portion": "",
+  "imgUrl": "/media/images/barfi.jpeg",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a60"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a62"
+  },
+  "name": "Jerry",
+  "description": "Jerry, also known as Jalebi, is a deep-fried, spiral-shaped sweet soaked in sugar syrup.",
+  "category": "Desserts",
+  "portion": "",
+  "imgUrl": "/media/images/jerry.jpeg",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a63"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a65"
+  },
+  "name": "Lakhamari",
+  "description": "Lakhamari is a traditional Newari sweet known for its hard, crunchy texture and mildly sweet taste. Made from flour, sugar, and ghee, this delicacy comes in different shapes and sizes.",
+  "category": "Desserts",
+  "portion": "",
+  "imgUrl": "/media/images/lakhamari.webp",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a66"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a68"
+  },
+  "name": "Juju Dhau",
+  "description": "Juju Dhau, meaning King of Yogurt, is a creamy, rich, and sweet yogurt from Bhaktapur.",
+  "category": "Desserts",
+  "portion": "",
+  "imgUrl": "/media/images/juju.webp",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a69"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a6b"
+  },
+  "name": "Yomari",
+  "description": "This steamed dumpling is made from rice flour and filled with sweet molasses (chaku) or khuwa (milk solids).",
+  "category": "Desserts",
+  "portion": "",
+  "imgUrl": "/media/images/yomari.png",
+  "types": [
+    {
+      "name": "Chaku",
+      "price": 70,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a6c"
+      }
+    },
+    {
+      "name": "Khuwa",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a6d"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a6f"
+  },
+  "name": "Tho",
+  "description": "Tho is a traditional alcoholic beverage made from fermented rice, milky, slightly sweet, and mildly alcoholic drink.",
+  "category": "Beverage",
+  "portion": "Per litre 100",
+  "imgUrl": "/media/images/tho.jpg",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 100,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a70"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac695a4bebcec961a72"
+  },
+  "name": "Aela",
+  "description": "Aela is a traditional homemade alcoholic beverage in Nepal, distilled from grains like rice, millet, or barley.",
+  "category": "Beverage",
+  "portion": "Per litre 120",
+  "imgUrl": "/media/images/local.jpeg",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 120,
+      "_id": {
+        "$oid": "6810eac695a4bebcec961a73"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac795a4bebcec961a75"
+  },
+  "name": "Beer",
+  "description": "",
+  "category": "Beverage",
+  "portion": "",
+  "imgUrl": "/media/images/beer.webp",
+  "types": [
+    {
+      "name": "Nepal Ice",
+      "price": 250,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a76"
+      }
+    },
+    {
+      "name": "Gorkha",
+      "price": 300,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a77"
+      }
+    },
+    {
+      "name": "Tuborg",
+      "price": 450,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a78"
+      }
+    },
+    {
+      "name": "Kasberg",
+      "price": 450,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a79"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac795a4bebcec961a7b"
+  },
+  "name": "Lassi",
+  "description": "Lassi is a refreshing yogurt-based drink enjoyed across Nepal. It can be served sweet, flavored with sugar, cardamom, and nuts, or as a salty version with a hint of spices.",
+  "category": "Beverage",
+  "portion": "Per glass 100",
+  "imgUrl": "/media/images/lassi.jpg",
+  "types": [
+    {
+      "name": "Plain",
+      "price": 70,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a7c"
+      }
+    },
+    {
+      "name": "With Almonds",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a7d"
+      }
+    },
+    {
+      "name": "With Almonds and khuwa",
+      "price": 100,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a7e"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac795a4bebcec961a80"
+  },
+  "name": "Cold Drinks",
+  "description": "",
+  "category": "Beverage",
+  "portion": "",
+  "imgUrl": "/media/images/coke.webp",
+  "types": [
+    {
+      "name": "Coke",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a81"
+      }
+    },
+    {
+      "name": "Fanta",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a82"
+      }
+    },
+    {
+      "name": "Sprite",
+      "price": 80,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a83"
+      }
+    },
+    {
+      "name": "Slice",
+      "price": 70,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a84"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810eac795a4bebcec961a86"
+  },
+  "name": "Khaja Set",
+  "description": "Non-veg: Baji(Chiura), Spinach, Beans, Choila, Aalu Tama, Bhatmas Sadeko, Mix Achar. Veg: Baji(Chiura), Spinach, Beans, Mushroom Choila, Aalu Tama, Bhatmas Sadeko, Mix Achar, Aalu Sadeko.",
+  "category": "Nonveg",
+  "portion": "",
+  "imgUrl": "/media/images/wholeitem.png",
+  "types": [
+    {
+      "name": "Non-Veg",
+      "price": 700,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a87"
+      }
+    },
+    {
+      "name": "Veg",
+      "price": 500,
+      "_id": {
+        "$oid": "6810eac795a4bebcec961a88"
+      }
+    }
+  ],
+  "__v": 0
+}]

@@ -83,7 +83,7 @@ const Registerpage = () => {
     e.preventDefault(); // Prevent default form submission
     if (validateForm()) {
       try {
-        const response = axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/auth/register`, {
+        const response = axios.post(`${import.meta.env.VITE_APP_BACKEND_BASE_URL}/api/auth/register`, {
           "name": `${formData.firstName} ${formData.lastName}`,
           "password": formData.password,
           "email": formData.email,

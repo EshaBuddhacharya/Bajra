@@ -86,14 +86,79 @@ const cancelOrder = async (req, res) => {
         await userOrder.save()
         return res.status(200).send({ message: 'Order canceled successfully' })
     }
-    catch (error) { 
-        return res.status(500).send({message: 'Error retriving user order'})
+    catch (error) {
+        return res.status(500).send({ message: 'Error retriving user order' })
     }
-    
+
 }
 
 const getDeliveryCost = (req, res) => {
     console.log('GET /api/order/getDeliveryCost')
     return res.send(150)
 }
-module.exports = { addOrder, getAddress, getOrders, getDeliveryCost, cancelOrder }
+
+const getAllOrders = async (req, res) => {
+    console.log("GET /api/order/getAllOrders")
+    try {
+        const orders = await Order.find()
+            .select('user deliveryLocation orderStatus createdAt items')
+            .populate({
+                path: 'user',
+                select: 'name phone'
+            })
+            .populate({
+                path: 'items.menuItem',
+                select: 'name'
+            });
+
+        return res.send(orders);
+    } catch (error) {
+        console.error("Error fetching orders:", error);
+        res.status(500).send("Error fetching order data");
+    }
+};
+
+const updateOrderStatus = async (req, res) => {
+    console.log("PUT /api/order/updateorderStatus")
+    const { order_id, status } = req.body;
+
+    // validating
+    if (!order_id || !status) {
+        return res.status(400).send("req should contain order_id and status")
+    }
+
+    try {
+        await Order.updateOne({ _id: order_id },
+            { $set: { orderStatus: status } })
+        
+        return res.status(200).send("Order Status updated successfully")
+    }
+    catch (error){ return res.status(500).send("Error updating order status", error) }
+}
+const deleteOrder = async (req, res) => {
+    console.log("DELETE /api/order/deleteOrder")
+    // extracting order_id
+    const order_id = req.params.id;
+
+    try { 
+        const result = await Order.deleteOne({_id: order_id});
+        if (result.deletedCount === 0) {
+            return res.status(404).send("Order not found");
+        }
+        return res.send("Order deleted successfully");
+    }
+    catch (error) { 
+        return res.status(500).send("Error deleting order");
+    }
+}
+
+module.exports = {
+    addOrder,
+    getAddress,
+    getOrders,
+    getDeliveryCost,
+    cancelOrder,
+    getAllOrders,
+    updateOrderStatus,
+    deleteOrder
+}

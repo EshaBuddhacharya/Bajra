@@ -241,6 +241,16 @@ const refreshTokenController = async (req, res) => {
 
     const { id_token: newIdToken, refresh_token: newRefreshToken, expires_in } = response.data;
 
+    // Verify token and get user
+    const decodedToken = await admin.auth().verifyIdToken(newIdToken);
+    let user;
+    try {
+      user = await User.findOne({ firebaseUid: decodedToken.user_id });
+    } catch (error) {
+      console.error('Error finding user:', error);
+      user = false;
+    }
+
     // Update the cookie with new ID token
     res.cookie('loginToken', newIdToken, {
       httpOnly: true,
@@ -261,7 +271,8 @@ const refreshTokenController = async (req, res) => {
       message: 'Token refreshed successfully',
       idToken: newIdToken,
       refreshToken: newRefreshToken,
-      expiresIn: expires_in
+      expiresIn: expires_in,
+      user
     });
 
   } catch (error) {

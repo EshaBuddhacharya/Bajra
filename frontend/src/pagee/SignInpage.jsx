@@ -100,7 +100,7 @@ const SignInPage = () => {
   const [refreshToken, setRefreshToken] = useState();
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-  const { axiosInstance, setIsAuthenticated } = useAuth();
+  const { axiosInstance, setIsAuthenticated, setUser } = useAuth();
 
   const validate = useCallback(() => {
     const errs = {};
@@ -140,12 +140,16 @@ const SignInPage = () => {
       setRefreshToken(refreshToken);
 
       try {
-        await axiosInstance.post(
+        const response = await axiosInstance.post(
           '/api/auth/loginWithGoogle',
           { authToken: idToken, refreshToken }
         );
         setIsAuthenticated(true)
-        navigate('/showItems');
+        setUser(response.data?.user)
+        if (response.data?.user?.role === 'admin'){
+          return navigate('/admin')
+        }
+        return navigate('/showItems');
       } catch (error) {
         if (error.response?.status === 400) {
           setIsFurthureSignIn(true);

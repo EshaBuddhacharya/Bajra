@@ -122,6 +122,7 @@ export default function AuthProvider({ children }) {
 
   const value = useMemo(() => ({
     user,
+    setUser,
     accessToken,
     isAuthenticated,
     authCookie,
@@ -130,7 +131,7 @@ export default function AuthProvider({ children }) {
     useAuth,
     axiosInstance,
     setIsAuthenticated,
-  }), [user, accessToken, isAuthenticated, setIsAuthenticated, authCookie, login, logout, axiosInstance, useAuth]);
+  }), [user, setUser, accessToken, isAuthenticated, setIsAuthenticated, authCookie, login, logout, axiosInstance, useAuth]);
 
 if (loading) return null; // or a spinner
 
