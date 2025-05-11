@@ -15,7 +15,7 @@ app.use('/media', express.static(path.join(__dirname, 'public/media')));
 // Middleware to parse JSON
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:5173", // allow all origins
+  origin: ["http://localhost:5173", "https://bajra.onrender.com"], // allow specified origins
   credentials: true // allow cookies
 }));
 app.use(cookieParser());
