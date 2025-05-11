@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/AuthContext';
 import SearchBar from '../../component/admin/orders/SearchBar';
-import FilterDropdown from '../../component/admin/orders/FilterDropdown';
+import FilterDropdown from '../../component/admin/orders/FilterDropDown';
 import OrdersTable from '../../component/admin/orders/OrdersTable';
 import { ShoppingBag } from 'lucide-react';
 

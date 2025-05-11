@@ -19,7 +19,7 @@ import Confirm from './pagee/Confirm';
 import Orderri from './pagee/Orderri';
 import OrderPage from './pagee/OrderPage'
 import Ok from './pagee/Ok';
-import AdminLayout from './component/adminLayout';
+import AdminLayout from './component/AdminLayout';
 import AdminMenu from './pagee/admin/Menu';
 import Orders from './pagee/admin/Orders';
 import Dashboard from './pagee/admin/Dashboard';

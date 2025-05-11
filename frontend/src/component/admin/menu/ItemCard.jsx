@@ -57,7 +57,9 @@ const FoodItem = ({ name, imgUrl, description, types, portion, _id, index, handl
                 </Button>
             </Dialog.Trigger>
             <Dialog.Content>
-                <Dialog.Title>Are You Sure?</Dialog.Title>
+                <Dialog.Title>
+                    Are You Sure?
+                </Dialog.Title>
                 <Dialog.Description>
                     This action will result in the permanent deletion of the food item. This cannot be undone.
                 </Dialog.Description>
