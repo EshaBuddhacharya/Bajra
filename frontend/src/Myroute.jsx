@@ -23,6 +23,7 @@ import AdminLayout from './component/adminLayout';
 import AdminMenu from './pagee/admin/Menu';
 import Orders from './pagee/admin/Orders';
 import Dashboard from './pagee/admin/Dashboard';
+import Playground from './pagee/Playground'
 
 const Myroute = () => {
   return (
@@ -48,10 +49,11 @@ const Myroute = () => {
           <Route path ="/order" element ={<Orderri/>}/>
           <Route path ="/okpage" element ={<Ok/>}/>
           <Route path ="/OrderPage" element ={<OrderPage/>}/>
+          <Route path = '/playground' element = {<Playground />} /> 
         </Route>
         <Route path='admin' element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path='dashboard' element={<Dashboard />} />
+          <Route index element={<Orders />} />
+          {/* <Route path='dashboard' element={<Dashboard />} /> */}
           <Route path="menu" element={<AdminMenu />} />
           <Route path="orders" element={<Orders />} />
         </Route>

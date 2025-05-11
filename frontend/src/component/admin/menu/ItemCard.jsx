@@ -1,6 +1,8 @@
+'use client'
+
 import PropTypes from 'prop-types';
 import { motion, useAnimation } from 'framer-motion';
-import { Card, Box, Text, Skeleton, Button, RadioCards, Flex } from '@radix-ui/themes';
+import { Card, Box, Text, Skeleton, Button, RadioCards, Flex, Dialog } from '@radix-ui/themes';
 import { SquarePen, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -47,6 +49,32 @@ const FoodItem = ({ name, imgUrl, description, types, portion, _id, index, handl
         </Box>
     );
 
+    const DeleteButton = ({ handleDelete }) => (
+        <Dialog.Root>
+            <Dialog.Trigger>
+                <Button variant="soft" color="gray" highContrast>
+                    <Trash2 size={16} /> Delete
+                </Button>
+            </Dialog.Trigger>
+            <Dialog.Content>
+                <Dialog.Title>Are You Sure?</Dialog.Title>
+                <Dialog.Description>
+                    This action will result in the permanent deletion of the food item. This cannot be undone.
+                </Dialog.Description>
+                <Flex className="mt-4" justify={'end'} gap={'3'}>
+                    <Dialog.Close>
+                        <Button variant="soft" color="gray" highContrast >
+                            No
+                        </Button>
+                    </Dialog.Close>
+                    <Button variant="solid" color="gray" highContrast onClick={handleDelete}>
+                        Yes
+                    </Button>
+                </Flex>
+            </Dialog.Content>
+        </Dialog.Root>
+
+    )
     const ActionButtons = () => (
         <div style={{
             display: 'flex',
@@ -56,7 +84,7 @@ const FoodItem = ({ name, imgUrl, description, types, portion, _id, index, handl
             width: '100%'
         }}>
             <Button variant="soft" color='gray' highContrast><SquarePen size={16} /> Edit</Button>
-            <Button variant="soft" color='gray' highContrast><Trash2 size={16} onClick={handleDelete} /> Delete</Button>
+            <DeleteButton handleDelete={handleDelete} />
         </div>
     );
     const TypesRadio = ({ types, setSelectedType }) => {

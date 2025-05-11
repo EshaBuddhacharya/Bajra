@@ -70,7 +70,7 @@ const Sidebar = () => {
                     transition={{ duration: 0.3 }}
                     className="nav nav-pills flex-column mb-auto gap-2"
                 >
-                    <li>
+                    {/* <li>
                         <NavLink to="dashboard"
                             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                         >
@@ -81,7 +81,7 @@ const Sidebar = () => {
                                 </div>
                             )}
                         </NavLink>
-                    </li>
+                    </li> */}
                     <li>
                         <NavLink to="orders" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
                             {collapsed ? <ShoppingBag size={21} /> : (

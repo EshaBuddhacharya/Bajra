@@ -33,16 +33,17 @@ export default function Orders() {
 
   const filteredOrders = orders.filter((o) => {
     const searchTerm = search.trim().toLowerCase();
-    return (
+    const searchMatch = 
       o.user.name.toLowerCase().includes(searchTerm) ||
       o.user.phone.toLowerCase().includes(searchTerm) ||
       o.deliveryLocation.toLowerCase().includes(searchTerm) ||
       o.orderStatus.toLowerCase().includes(searchTerm) ||
       o._id.toLowerCase().includes(searchTerm) ||
       o.items.some(item =>
-        item.selectedType.name.toLowerCase().includes(searchTerm)
-      )
-    );
+      item.selectedType.name.toLowerCase().includes(searchTerm)
+      );
+    
+    return searchMatch && (!selectedStatus || o.orderStatus === selectedStatus);
   });
 
   return (
@@ -53,7 +54,7 @@ export default function Orders() {
       </h2>
       <div className="my-4 d-flex gap-2 align-items-center">
         <SearchBar search={search} onSearchChange={setSearch} />
-        <FilterDropdown selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} />
+        <FilterDropdown setSelectedStatus={setSelectedStatus} />
       </div>
       <OrdersTable orders={filteredOrders} onDelete={handleDelete} />
     </div>

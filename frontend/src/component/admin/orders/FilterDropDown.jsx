@@ -1,7 +1,7 @@
 import { DropdownMenu, Button } from '@radix-ui/themes';
 import { ListFilter } from 'lucide-react';
 
-export default function FilterDropdown({selectedStatus, setSelectedStatus}) {
+export default function FilterDropdown({setSelectedStatus}) {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
@@ -11,12 +11,13 @@ export default function FilterDropdown({selectedStatus, setSelectedStatus}) {
           <DropdownMenu.TriggerIcon />
         </Button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content >
-        <DropdownMenu.Item>pending</DropdownMenu.Item>
-        <DropdownMenu.Item>inprogress</DropdownMenu.Item>
-        <DropdownMenu.Item>in delivery</DropdownMenu.Item>
-        <DropdownMenu.Item>completed</DropdownMenu.Item>
-        <DropdownMenu.Item>canceled</DropdownMenu.Item>
+      <DropdownMenu.Content>
+        <DropdownMenu.Item onSelect={() => setSelectedStatus('')}>All</DropdownMenu.Item>
+        <DropdownMenu.Item onSelect={() => setSelectedStatus('pending')}>pending</DropdownMenu.Item>
+        <DropdownMenu.Item onSelect={() => setSelectedStatus('inprogress')}>inprogress</DropdownMenu.Item>
+        <DropdownMenu.Item onSelect={() => setSelectedStatus('in delivery')}>in delivery</DropdownMenu.Item>
+        <DropdownMenu.Item onSelect={() => setSelectedStatus('completed')}>completed</DropdownMenu.Item>
+        <DropdownMenu.Item onSelect={() => setSelectedStatus('canceled')}>canceled</DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   );
