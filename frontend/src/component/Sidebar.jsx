@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import '../App.css';
 import { LogOut, Coffee, ShoppingBag, LayoutDashboard, Users } from 'lucide-react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion'
 
 const Sidebar = () => {

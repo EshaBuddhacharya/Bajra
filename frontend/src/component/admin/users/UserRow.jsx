@@ -17,9 +17,9 @@ export default function UserRow({ user, onDelete, currentUser }) {
       <Table.Cell>{new Date(user.createdAt).toLocaleDateString()}</Table.Cell>
       <Table.Cell justify='center'>
         <div
-          onClick={() => onDelete(user._id)}
-          style={{ cursor: 'pointer' }}
-          onMouseEnter={() => setHovered(true)}
+          onClick={() => currentUser._id !== user._id && onDelete(user._id)}
+          style={{ cursor: currentUser._id === user._id ? 'not-allowed' : 'pointer' }}
+          onMouseEnter={() => {currentUser._id !== user._id && setHovered(true)}}
           onMouseLeave={() => setHovered(false)}
         >
           <Trash2 size='18' color={hovered ? '#ff6666' : 'black'} />

@@ -13,8 +13,8 @@ export default function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticatedAdmin, setIsAuthenticatedAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-
 
   const logout = useCallback(async () => {
     try {
@@ -25,6 +25,7 @@ export default function AuthProvider({ children }) {
       setUser(null);
       setAccessToken(null);
       setRefreshToken(null);
+      setIsAuthenticatedAdmin(false);
       setIsAuthenticated(false);
     }
   }, []);
@@ -85,6 +86,15 @@ export default function AuthProvider({ children }) {
     return instance;
   }, [accessToken, refreshToken, logout]);
 
+  // checking if user is authenticted user
+  useEffect(() => { 
+    const fetchUser = async () => {
+      const response = await axiosInstance.get("/api/auth/isAuthenticated")
+      setIsAuthenticatedAdmin(response.data?.user?.role === 'admin')
+    }
+    fetchUser()
+  }, [axiosInstance, setIsAuthenticatedAdmin, isAuthenticated])
+
   const login = useCallback(async (email, password) => {
     const response = await axiosInstance.post('/api/auth/signin', { email, password });
     const { idToken, refreshToken, user } = response.data;
@@ -123,6 +133,7 @@ export default function AuthProvider({ children }) {
   const value = useMemo(() => ({
     user,
     setUser,
+    isAuthenticatedAdmin,
     accessToken,
     isAuthenticated,
     authCookie,
@@ -131,7 +142,7 @@ export default function AuthProvider({ children }) {
     useAuth,
     axiosInstance,
     setIsAuthenticated,
-  }), [user, setUser, accessToken, isAuthenticated, setIsAuthenticated, authCookie, login, logout, axiosInstance, useAuth]);
+  }), [user, setUser, accessToken, isAuthenticated, setIsAuthenticated, authCookie, login, logout, axiosInstance, useAuth, isAuthenticatedAdmin]);
 
 if (loading) return null; // or a spinner
 

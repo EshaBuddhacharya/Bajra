@@ -20,7 +20,7 @@ export default function Users() {
             setCurrentUser(response.data?.user)
         }
         fetchUser()
-    }, [axiosInstance])
+    }, [axiosInstance, setCurrentUser])
 
     const toggleOrder = () => {
         setIsAscending(!isAscending)

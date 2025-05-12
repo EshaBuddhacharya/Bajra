@@ -1,8 +1,11 @@
 import React from 'react';
 import Header from '../component/Header'
 import { Link } from 'react-router-dom';
-
+import { useAuth } from '../contexts/AuthContext'
+import { Flex } from '@radix-ui/themes'
 const Homepagee = () => {
+  const { isAuthenticatedAdmin } = useAuth()
+
   return (
     <>
       {/* Top Section */}
@@ -21,20 +24,32 @@ const Homepagee = () => {
           }}
         >
           <Header />
-          <div 
-            id = 'hero' 
+          <div
+            id='hero'
             style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', flexGrow: '1', gap: '10px' }}>
             <span style={{ fontSize: '2rem', fontWeight: '500' }}>
               Authentic Newari Cuisine, <br />Just a click away
             </span>
-            <Link 
-              to="/showItems" 
-              className="btn btn-danger me-2" 
-              onClick={() => console.log('Navigating to /menu')}
-              style={{paddingLeft: '25px', paddingRight: '25px', paddingTop: '10px', paddingBottom: '10px'}}
-            >
-              Explore menu
-            </Link>
+
+            <Flex gap='2'>
+              <Link
+                to="/showItems"
+                className="btn btn-danger me-2"
+                onClick={() => console.log('Navigating to /menu')}
+                style={{ paddingLeft: '25px', paddingRight: '25px', paddingTop: '10px', paddingBottom: '10px' }}
+              >
+                Explore menu
+              </Link>
+              {isAuthenticatedAdmin && (
+                <Link
+                  to="/admin"
+                  className="btn btn-danger me-2"
+                  style={{ paddingLeft: '25px', paddingRight: '25px', paddingTop: '10px', paddingBottom: '10px' }}
+                >
+                  Admin Panel
+                </Link>
+              )}
+            </Flex>
           </div>
         </div>
 
