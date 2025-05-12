@@ -5,6 +5,7 @@ import SearchBar from '../../component/admin/orders/SearchBar';
 import FilterDropdown from '../../component/admin/orders/FilterDropDown';
 import OrdersTable from '../../component/admin/orders/OrdersTable';
 import { ShoppingBag } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 
 export default function Orders() {
   const { axiosInstance } = useAuth();
@@ -15,7 +16,7 @@ export default function Orders() {
   const [sortBy, setSortBy] = useState('')
   const [isAscending, setIsAscending] = useState(false)
 
-  const toggleOrder = () => { 
+  const toggleOrder = () => {
     setIsAscending(!isAscending)
   }
   // fetching orders
@@ -41,22 +42,22 @@ export default function Orders() {
   };
   const filteredOrders = orders.filter((o) => {
     const searchTerm = search.trim().toLowerCase();
-    const searchMatch = 
+    const searchMatch =
       o.user.name.toLowerCase().includes(searchTerm) ||
       o.user.phone.toLowerCase().includes(searchTerm) ||
       o.deliveryLocation.toLowerCase().includes(searchTerm) ||
       o.orderStatus.toLowerCase().includes(searchTerm) ||
       o._id.toLowerCase().includes(searchTerm) ||
       o.items.some(item =>
-      item.selectedType.name.toLowerCase().includes(searchTerm)
+        item.selectedType.name.toLowerCase().includes(searchTerm)
       );
-    
-      return searchMatch && (!selectedStatus || o.orderStatus === selectedStatus);
+
+    return searchMatch && (!selectedStatus || o.orderStatus === selectedStatus);
   }).sort((a, b) => {
     if (!sortBy) return 0;
-    
+
     let comparison = 0;
-    switch(sortBy) {
+    switch (sortBy) {
       case 'date':
         comparison = new Date(b.createdAt) - new Date(a.createdAt);
         break;
@@ -87,20 +88,23 @@ export default function Orders() {
   return (
     <div className="p-5" style={{ flexGrow: 1 }}>
       <h2 className='d-flex align-items-center gap-2'>
-        <ShoppingBag fontWeight={400} size={30}/>
+        <ShoppingBag fontWeight={400} size={30} />
         Order Management
       </h2>
       <div className="my-4 d-flex gap-2 align-items-center">
         <SearchBar search={search} onSearchChange={setSearch} />
         <FilterDropdown setSelectedStatus={setSelectedStatus} />
       </div>
-      <OrdersTable 
-        orders={filteredOrders} 
-        onDelete={handleDelete}
-        isLoading={isOrdersLoading}
-        toggleOrder={toggleOrder}
-        setSortBy={setSortBy}
-      />
+      <AnimatePresence mode='wait'>
+
+        <OrdersTable
+          orders={filteredOrders}
+          onDelete={handleDelete}
+          isLoading={isOrdersLoading}
+          toggleOrder={toggleOrder}
+          setSortBy={setSortBy}
+        />
+      </AnimatePresence>
     </div>
   );
 }
