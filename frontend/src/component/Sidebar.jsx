@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import '../App.css';
-import { LogOut, Coffee, ShoppingBag, LayoutDashboard } from 'lucide-react';
+import { LogOut, Coffee, ShoppingBag, LayoutDashboard, Users } from 'lucide-react';
 import { motion } from 'framer-motion'
 
 const Sidebar = () => {
@@ -98,6 +98,16 @@ const Sidebar = () => {
                                 <div className="d-flex gap-3">
                                     <Coffee size={21} />
                                     Menu
+                                </div>
+                            )}
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="users" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                            {collapsed ? <Users  size={21} /> : (
+                                <div className="d-flex gap-3">
+                                    <Users  size={21} />
+                                    Users
                                 </div>
                             )}
                         </NavLink>

@@ -12,7 +12,13 @@ export default function Orders() {
   const [search, setSearch] = useState('');
   const [isOrdersLoading, setIsOrdersLoading] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('')
+  const [sortBy, setSortBy] = useState('')
+  const [isAscending, setIsAscending] = useState(false)
 
+  const toggleOrder = () => { 
+    setIsAscending(!isAscending)
+  }
+  // fetching orders
   useEffect(() => {
     async function fetchOrders() {
       try {
@@ -33,7 +39,6 @@ export default function Orders() {
       .then(() => setOrders((prev) => prev.filter((o) => o._id !== id)))
       .catch((err) => toast.error('Error deleting order', err.message));
   };
-
   const filteredOrders = orders.filter((o) => {
     const searchTerm = search.trim().toLowerCase();
     const searchMatch = 
@@ -46,7 +51,37 @@ export default function Orders() {
       item.selectedType.name.toLowerCase().includes(searchTerm)
       );
     
-    return searchMatch && (!selectedStatus || o.orderStatus === selectedStatus);
+      return searchMatch && (!selectedStatus || o.orderStatus === selectedStatus);
+  }).sort((a, b) => {
+    if (!sortBy) return 0;
+    
+    let comparison = 0;
+    switch(sortBy) {
+      case 'date':
+        comparison = new Date(b.createdAt) - new Date(a.createdAt);
+        break;
+      case 'name':
+        comparison = a.user.name.localeCompare(b.user.name);
+        break;
+      case 'phone':
+        comparison = a.user.phone.localeCompare(b.user.phone);
+        break;
+      case 'location':
+        comparison = a.deliveryLocation.localeCompare(b.deliveryLocation);
+        break;
+      case 'status':
+        comparison = a.orderStatus.localeCompare(b.orderStatus);
+        break;
+      case 'type':
+        comparison = a.items[0]?.selectedType.name.localeCompare(b.items[0]?.selectedType.name) || 0;
+        break;
+      case 'total':
+        comparison = b.total - a.total;
+        break;
+      default:
+        return 0;
+    }
+    return isAscending ? comparison : -comparison;
   });
 
   return (
@@ -59,7 +94,13 @@ export default function Orders() {
         <SearchBar search={search} onSearchChange={setSearch} />
         <FilterDropdown setSelectedStatus={setSelectedStatus} />
       </div>
-      <OrdersTable orders={filteredOrders} onDelete={handleDelete} isLoading={isOrdersLoading}/>
+      <OrdersTable 
+        orders={filteredOrders} 
+        onDelete={handleDelete}
+        isLoading={isOrdersLoading}
+        toggleOrder={toggleOrder}
+        setSortBy={setSortBy}
+      />
     </div>
   );
 }

@@ -1,16 +1,14 @@
 import { Table } from '@radix-ui/themes';
 import {
-  Smartphone,
+  User,
+  Phone,
   MapPin,
-  ChartNoAxesColumn,
-  Calendar,
-  ListCollapse,
+  UserCog,
+  Calendar
 } from 'lucide-react';
 import { GrAction } from 'react-icons/gr';
-import { PiFinnTheHumanFill } from "react-icons/pi";
 
-
-export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder}) {
+export default function TableHeader({toggleOrder, setSortBy}) {
   return (
     <Table.Header>
       <Table.Row justify='center' align='center'>
@@ -25,7 +23,7 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <PiFinnTheHumanFill size={16} style={{ marginRight: '6px' }} />
+            <User size={16} style={{ marginRight: '6px' }} />
             Full Name
           </div>
         </Table.ColumnHeaderCell>
@@ -40,7 +38,7 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <Smartphone size={16} style={{ marginRight: '6px' }} />
+            <Phone size={16} style={{ marginRight: '6px' }} />
             Phone Number
           </div>
         </Table.ColumnHeaderCell>
@@ -49,14 +47,14 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             className="d-flex align-items-center"
             style={{ cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
             onClick={() => {
-              setSortBy('location');
+              setSortBy('address');
               toggleOrder();
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             <MapPin size={16} style={{ marginRight: '6px' }} />
-            Delivery Location
+            Address
           </div>
         </Table.ColumnHeaderCell>
         <Table.ColumnHeaderCell style={{ fontWeight: '500' }}>
@@ -64,14 +62,14 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             className="d-flex align-items-center"
             style={{ cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
             onClick={() => {
-              setSortBy('status');
+              setSortBy('role');
               toggleOrder();
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <ChartNoAxesColumn size={16} style={{ marginRight: '6px' }} />
-            Order Status
+            <UserCog size={16} style={{ marginRight: '6px' }} />
+            Role
           </div>
         </Table.ColumnHeaderCell>
         <Table.ColumnHeaderCell style={{ fontWeight: '500' }}>
@@ -86,22 +84,7 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             <Calendar size={16} style={{ marginRight: '6px' }} />
-            Order Date
-          </div>
-        </Table.ColumnHeaderCell>
-        <Table.ColumnHeaderCell style={{ fontWeight: '500' }}>
-          <div 
-            className="d-flex align-items-center"
-            style={{ cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
-            onClick={() => {
-              setSortBy('type');
-              toggleOrder();
-            }}
-            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
-            onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
-          >
-            <ListCollapse size={16} style={{ marginRight: '6px' }} />
-            Items
+            Created At
           </div>
         </Table.ColumnHeaderCell>
         <Table.ColumnHeaderCell style={{ fontWeight: '500' }}>

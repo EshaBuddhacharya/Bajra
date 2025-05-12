@@ -25,11 +25,13 @@ const authRoutes = require('./routes/auth');
 const menuRoutes = require('./routes/menu');
 const orderRoutes = require('./routes/order'); 
 const feedbackRoutes = require("./routes/feedback");
+const usersRoutes = require("./routes/users")
 
 app.use('/api/auth', authRoutes); 
 app.use('/api/menu', menuRoutes)
 app.use('/api/order', orderRoutes)
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/users', usersRoutes);
 
 app.get('/test', (req, res) => {
   res.send('Hello World!');

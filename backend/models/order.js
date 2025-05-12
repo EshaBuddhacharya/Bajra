@@ -24,7 +24,8 @@ const orderSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
+        onDelete: 'cascade'
     },
     deliveryLocation: String,
     additionalInstructions: String,

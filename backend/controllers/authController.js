@@ -307,7 +307,7 @@ const loginWithGoogle = async (req, res) => {
     if (!user) {
       if (!name || !address || !phoneNumber) {
         return res.status(400).json({
-          error: "Missing required fields",
+          error: "Missing required fields", 
           details: "Name, address and phone number are required"
         });
       }
@@ -316,7 +316,8 @@ const loginWithGoogle = async (req, res) => {
         firebaseUid: decodedToken.uid,
         name,
         address,
-        phone: phoneNumber
+        phone: phoneNumber,
+        role: 'customer' // This needs to match exactly what's in the enum in the schema
       });
     }
     // Update the cookie with new ID token
