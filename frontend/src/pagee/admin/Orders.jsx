@@ -10,13 +10,16 @@ export default function Orders() {
   const { axiosInstance } = useAuth();
   const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState('');
+  const [isOrdersLoading, setIsOrdersLoading] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('')
 
   useEffect(() => {
     async function fetchOrders() {
       try {
+        setIsOrdersLoading(true);
         const { data } = await axiosInstance.get('/api/order/getAllOrders');
         setOrders(data);
+        setIsOrdersLoading(false);
       } catch (err) {
         toast.error('Error fetching orders', err.message);
       }
@@ -56,7 +59,7 @@ export default function Orders() {
         <SearchBar search={search} onSearchChange={setSearch} />
         <FilterDropdown setSelectedStatus={setSelectedStatus} />
       </div>
-      <OrdersTable orders={filteredOrders} onDelete={handleDelete} />
+      <OrdersTable orders={filteredOrders} onDelete={handleDelete} isLoading={isOrdersLoading}/>
     </div>
   );
 }

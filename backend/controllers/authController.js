@@ -2,6 +2,7 @@ const admin = require("../firebase/firebaseAdmin");
 const User = require("../models/users");
 const axios = require("axios")
 
+require('dotenv').config();
 
 const registerController = async (req, res) => {
   try {
