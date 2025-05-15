@@ -1,21 +1,21 @@
-import { Plus } from "lucide-react";
 import { Button, Dialog, Flex } from '@radix-ui/themes';
 import { useState } from 'react';
 import { useAuth } from "../../../contexts/AuthContext";
 import { toast } from 'react-toastify';
+import {SquarePen} from 'lucide-react'
 
-const AddItemDialog = () => {
+const EditItemDialog = ({ item, onEdit }) => {
     const { axiosInstance } = useAuth();
-    const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        category: '',
-        portion: '',
-        imgUrl: '',
-        types: [{ name: '', price: '' }],
-    });
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formData, setFormData] = useState({
+        name: item.name || '',
+        description: item.description || '',
+        category: item.category || '',
+        portion: item.portion || '',
+        imgUrl: item.imgUrl || '',
+        types: item.types || [{ name: '', price: '' }],
+    });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -58,20 +58,15 @@ const AddItemDialog = () => {
         setIsSubmitting(true);
 
         try {
-            const response = await axiosInstance.post('/api/menu/insertItem', formData);
-            toast.success('Item added successfully');
+            const response = await axiosInstance.put(`/api/menu/editItem/${item._id}`, formData);
+            toast.success('Item updated successfully');
             setIsDialogOpen(false);
-            setFormData({
-                name: '',
-                description: '',
-                category: '',
-                portion: '',
-                imgUrl: '',
-                types: [{ name: '', price: '' }],
-            });
+            if (onEdit) {
+                onEdit(response.data);
+            }
         } catch (error) {
-            toast.error('Error adding item');
-            console.error('Error adding item:', error);
+            toast.error('Error updating item');
+            console.error('Error updating item:', error);
         } finally {
             setIsSubmitting(false);
         }
@@ -80,15 +75,15 @@ const AddItemDialog = () => {
     return (
         <Dialog.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <Dialog.Trigger asChild>
-                <Button color="gray" variant="solid" highContrast>
-                    <Plus color="white" size={18} />
-                    Add Item
+                <Button variant="soft" color='gray' highContrast>
+                    <SquarePen size='16'/>
+                    Edit
                 </Button>
             </Dialog.Trigger>
 
             <Dialog.Content className="lg">
-                <Dialog.Title className="">
-                    Add Food Item
+                <Dialog.Title>
+                    Edit Food Item
                 </Dialog.Title>
                 <form onSubmit={handleSubmit}>
                     <div className="modal-body">
@@ -227,4 +222,4 @@ const AddItemDialog = () => {
     );
 };
 
-export default AddItemDialog;
+export default EditItemDialog; 

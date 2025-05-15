@@ -3,10 +3,11 @@
 import PropTypes from 'prop-types';
 import { motion, useAnimation } from 'framer-motion';
 import { Card, Box, Text, Skeleton, Button, RadioCards, Flex, Dialog } from '@radix-ui/themes';
-import { SquarePen, Trash2 } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import EditItemDialog from './EditItemDialog';
 
-const FoodItem = ({ name, imgUrl, description, types, portion, _id, index, handleDelete }) => {
+const FoodItem = ({ name, imgUrl, description, types, portion, _id, index, handleDelete, onEdit }) => {
     const imageSrc = `${import.meta.env.VITE_BACKEND_BASE_URL}${imgUrl}`;
     const [selectedType, setSelectedType] = useState(types[0]?.name)
     const controls = useAnimation();
@@ -69,14 +70,14 @@ const FoodItem = ({ name, imgUrl, description, types, portion, _id, index, handl
                             No
                         </Button>
                     </Dialog.Close>
-                    <Button variant="solid" color="gray" highContrast onClick={handleDelete}>
+                    <Button variant="solid" color="gray" highContrast onClick={() => handleDelete(_id)}>
                         Yes
                     </Button>
                 </Flex>
             </Dialog.Content>
         </Dialog.Root>
-
     )
+
     const ActionButtons = () => (
         <div style={{
             display: 'flex',
@@ -85,10 +86,14 @@ const FoodItem = ({ name, imgUrl, description, types, portion, _id, index, handl
             gap: '1rem',
             width: '100%'
         }}>
-            <Button variant="soft" color='gray' highContrast><SquarePen size={16} /> Edit</Button>
+            <EditItemDialog 
+                item={{ name, description, category: '', portion, imgUrl, types, _id }} 
+                onEdit={onEdit}
+            />
             <DeleteButton handleDelete={handleDelete} />
         </div>
     );
+
     const TypesRadio = ({ types, setSelectedType }) => {
         if (!types) {
             return
@@ -108,7 +113,6 @@ const FoodItem = ({ name, imgUrl, description, types, portion, _id, index, handl
                         <RadioCards.Item key={type.name} value={type.name}>
                             <Flex direction="column" width="100%">
                                 <Text weight="semibold" size={2}>{type.name}</Text>
-                                {/* <Text weight="semibold" size={1}>Rs. {type.price}</Text> */}
                             </Flex>
                         </RadioCards.Item>
                     ))}
@@ -188,7 +192,6 @@ export const SkeletonFoodItem = () => {
     );
 };
 
-
 FoodItem.propTypes = {
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -198,6 +201,7 @@ FoodItem.propTypes = {
     types: PropTypes.arrayOf(
         PropTypes.shape({ name: PropTypes.string, price: PropTypes.number })
     ).isRequired,
+    onEdit: PropTypes.func,
 };
 
 export default FoodItem;

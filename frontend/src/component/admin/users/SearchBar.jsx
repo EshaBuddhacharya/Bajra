@@ -1,13 +1,13 @@
 import { TextField } from '@radix-ui/themes';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
-export default function SearchBar({ search, onSearchChange }) {
+export default function SearchBar({ search, onSearchChange, placeholder }) {
   return (
     <div className='' style={{ width: '30rem' }}>
       <TextField.Root
         size="3"
         radius="full"
-        placeholder="Search the orders..."
+        placeholder={placeholder}
         value={search}
         onChange={(e) => onSearchChange(e.target.value)}
       >

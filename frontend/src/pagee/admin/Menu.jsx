@@ -40,9 +40,15 @@ export default function AdminMenu() {
 
     const handleDelete = (id) => {
         axiosInstance
-            .delete(`/api/order/deleteOrder/${id}`)
+            .delete(`/api/menu/deleteItem/${id}`)
             .then(() => setMenuData((prev) => prev.filter((o) => o._id !== id)))
             .catch((err) => toast.error('Error deleting order', err.message));
+    };
+
+    const handleEdit = (updatedItem) => {
+        setMenuData((prev) =>
+            prev.map((item) => (item._id === updatedItem._id ? updatedItem : item))
+        );
     };
 
     return (
@@ -54,7 +60,12 @@ export default function AdminMenu() {
                 categoryError={categoryError}
                 setSelectedCategory={setSelectedCategory}
             />
-            <MenuCards filteredData={filteredData} isLoading={isMenuLoading} handleDelete={handleDelete} />
+            <MenuCards
+                filteredData={filteredData}
+                isLoading={isMenuLoading}
+                handleDelete={handleDelete}
+                onEdit={handleEdit}
+            />
         </div>
     );
 }

@@ -3,7 +3,8 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/AuthContext';
 import SearchBar from '../../component/admin/users/SearchBar';
 import UsersTable from '../../component/admin/users/UsersTable';
-import { ShoppingBag, UserIcon } from 'lucide-react';
+import { UserIcon } from 'lucide-react';
+import { motion, AnimatePresence } from "framer-motion"; // eslint-disable-line
 
 export default function Users() {
     const { axiosInstance } = useAuth();
@@ -91,18 +92,20 @@ export default function Users() {
                 User Management
             </h2>
             <div className="my-4 d-flex gap-2 align-items-center">
-                <SearchBar search={search} onSearchChange={setSearch} />
+                <SearchBar search={search} onSearchChange={setSearch} placeholder="Search the users..."/>
             </div>
-            <UsersTable
-                users={filteredUsers}
-                onDelete={handleDelete}
-                isLoading={isUsersLoading}
-                toggleOrder={toggleOrder}
-                setSortBy={setSortBy}
-                isAscending={isAscending}
-                sortBy={sortBy}
-                currentUser={currentUser}
-            />
+            <AnimatePresence mode='wait'>
+                <UsersTable
+                    users={filteredUsers}
+                    onDelete={handleDelete}
+                    isLoading={isUsersLoading}
+                    toggleOrder={toggleOrder}
+                    setSortBy={setSortBy}
+                    isAscending={isAscending}
+                    sortBy={sortBy}
+                    currentUser={currentUser}
+                />
+            </AnimatePresence>
         </div>
     );
 }
