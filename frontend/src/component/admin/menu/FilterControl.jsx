@@ -1,4 +1,4 @@
-import { SegmentedControl, Skeleton } from '@radix-ui/themes';
+import { SegmentedControl, Skeleton, Grid } from '@radix-ui/themes';
 
 const FilterControl = ({ categoryData, categoryError, isCategoryLoading, setSelectedCategory }) => {
     if (isCategoryLoading) return (
@@ -15,18 +15,20 @@ const FilterControl = ({ categoryData, categoryError, isCategoryLoading, setSele
             defaultValue="all"
             radius="large"
             variant="classic"
-            size='3'
+            size={{ sm: '2', md: '3', initial: "1"}}
             onValueChange={(value) => setSelectedCategory(value)}
         >
-            <SegmentedControl.Item value="all">All</SegmentedControl.Item>
-            {categoryData?.categories?.map(category => (
-                <SegmentedControl.Item
-                    value={category.toLowerCase()}
-                    key={category}
-                >
-                    {category}
-                </SegmentedControl.Item>
-            ))}
+            <div className="d-flex flex-wrap gap-2">
+                <SegmentedControl.Item value="all">All</SegmentedControl.Item>
+                {categoryData?.categories?.map(category => (
+                    <SegmentedControl.Item
+                        value={category.toLowerCase()}
+                        key={category}
+                    >
+                        {category}
+                    </SegmentedControl.Item>
+                ))}
+            </div>
         </SegmentedControl.Root>
     );
 };

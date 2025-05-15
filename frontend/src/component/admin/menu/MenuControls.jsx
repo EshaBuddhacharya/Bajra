@@ -1,8 +1,9 @@
 import FilterControl from './FilterControl';
 import AddItemDialog from './AddItemDialog';
+import {Flex} from "@radix-ui/themes"
 
 const MenuControls = ({ categoryData, isCategoryLoading, categoryError, setSelectedCategory }) => (
-    <div className="my-4 d-flex justify-content-between w-100">
+    <Flex className="my-4 w-100" justify={"between"} direction={{initial: 'column', sm: 'row'}} gap='2'>
         <div>
             <FilterControl
                 categoryData={categoryData}
@@ -14,7 +15,7 @@ const MenuControls = ({ categoryData, isCategoryLoading, categoryError, setSelec
         <div>
             <AddItemDialog />
         </div>
-    </div>
+    </Flex>
 );
 
 export default MenuControls;

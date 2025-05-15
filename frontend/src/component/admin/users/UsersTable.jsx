@@ -10,8 +10,16 @@ export default function UsersTable({ users, onDelete, isLoading, toggleOrder, se
       <Table.Root size="2" variant="surface"> 
         <TableHeader toggleOrder={toggleOrder} setSortBy={setSortBy}/>  
         <Table.Body>
-          {users.map((user) => (
-          <UserRow key={user._id} user={user} onDelete={onDelete} isAscending={isAscending} sortBy={sortBy} currentUser={currentUser}/>
+          {users.map((user, index) => (
+            <UserRow 
+              key={user._id} 
+              user={user} 
+              onDelete={onDelete} 
+              isAscending={isAscending} 
+              sortBy={sortBy} 
+              currentUser={currentUser}
+              index={index}
+            />
           ))}
         </Table.Body>
       </Table.Root>

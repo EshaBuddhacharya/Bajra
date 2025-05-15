@@ -92,7 +92,7 @@ export default function Orders() {
         Order Management
       </h2>
       <div className="my-4 d-flex gap-2 align-items-center">
-        <SearchBar search={search} onSearchChange={setSearch} />
+        <SearchBar search={search} onSearchChange={setSearch} placeholder="Search the orders..."/>
         <FilterDropdown setSelectedStatus={setSelectedStatus} />
       </div>
       <AnimatePresence mode='wait'>

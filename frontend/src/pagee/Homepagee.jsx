@@ -2,23 +2,20 @@ import React from 'react';
 import Header from '../component/Header'
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext'
-import { Flex } from '@radix-ui/themes'
+import { Box, Flex, Grid, Text } from '@radix-ui/themes'
 const Homepagee = () => {
   const { isAuthenticatedAdmin } = useAuth()
 
   return (
     <>
       {/* Top Section */}
-      <div style={{ display: 'flex', width: '100%' }}>
+      <Grid style={{ width: '100%' }} columns={{initial: '1', sm: '2'}} gap='3' direction={{initial: '', sm: 'row'}}>
         {/* Left Section */}
-        <div
+        <Box
           style={{
-            flex: 1,
-            padding: '',
-            paddingTop: '0px',
-            paddingLeft: '',
+            width: '100%',
+            padding: '0',
             textAlign: 'center',
-            gap: '',
             display: 'flex',
             flexDirection: 'column'
           }}
@@ -27,9 +24,9 @@ const Homepagee = () => {
           <div
             id='hero'
             style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', flexGrow: '1', gap: '10px' }}>
-            <span style={{ fontSize: '2rem', fontWeight: '500' }}>
+            <Text size={{initial: '6', sm: '7'}} style={{fontWeight: '500'}}>
               Authentic Newari Cuisine, <br />Just a click away
-            </span>
+            </Text>
 
             <Flex gap='2'>
               <Link
@@ -51,25 +48,26 @@ const Homepagee = () => {
               )}
             </Flex>
           </div>
-        </div>
+        </Box>
 
         {/* Right Section */}
-        <div
+        <Box
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            width: '100%'
           }}
         >
           <img
             src="/images/wholeitem.png"
             alt="Complete Newari meal set"
             style={{
-
+              width: '100%'
             }}
           />
-        </div>
-      </div>
+        </Box>
+      </Grid>
 
       {/* Banner Image */}
       <img
@@ -78,7 +76,6 @@ const Homepagee = () => {
         style={{
           width: '100%',
           height: '700px',
-          paddingTop: '',
           paddingBottom: '90px',
         }}
       />

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from "../contexts/AuthContext"
+import {Flex} from '@radix-ui/themes'
 
 const 
 Header = () => {
@@ -46,9 +47,9 @@ Header = () => {
               <button className="btn btn-danger" style={{ width: '120px' }} onClick={logout}> Logout </button>
             </div>
           ) : (
-            <>
+            <Flex direction={{initial: 'column', sm: 'row'}} gap="2">
               <div>
-                <Link to="/signin" className="btn btn-dark me-2" style={{ width: '120px' }} onClick={() => console.log('Navigating to /signin')}>
+                <Link to="/signin" className="btn btn-dark" style={{ width: '120px' }} onClick={() => console.log('Navigating to /signin')}>
                   Sign in
                 </Link>
               </div>
@@ -57,7 +58,7 @@ Header = () => {
                   Register
                 </Link>
               </div>
-            </>
+            </Flex>
           )}
         </div>
     </header>

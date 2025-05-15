@@ -4,14 +4,14 @@ import { useState } from 'react';
 import OrderStatusSelect from './OrderStatusSelect';
 import { motion } from 'framer-motion';
 
-export default function OrderRow({ order, onDelete }) {
+export default function OrderRow({ order, onDelete, index }) {
   const [hovered, setHovered] = useState(false);
 
   const cellVariants = {
-    initial: { opacity: 0, scale: 0.9 },
-    animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.9 },
-    transition: { duration: 0.3 }
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 20 },
+    transition: { duration: 0.3, delay: 0.1 * index }
   };
 
   return (

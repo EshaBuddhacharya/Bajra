@@ -19,8 +19,13 @@ export default function OrdersTable({ orders, onDelete, isLoading, toggleOrder, 
               </Table.Cell>
             </Table.Row>
           ) : (
-            orders.map((order) => (
-              <OrderRow key={order._id} order={order} onDelete={onDelete} isAscending={isAscending} sortBy={sortBy} />
+            orders.map((order, index) => (
+              <OrderRow 
+                key={order._id} 
+                order={order} 
+                onDelete={onDelete} 
+                index={index} 
+              />
             ))
           )}
         </Table.Body>

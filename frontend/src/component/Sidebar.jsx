@@ -5,6 +5,7 @@ import '../App.css';
 import { LogOut, Coffee, ShoppingBag, LayoutDashboard, Users } from 'lucide-react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion'
+import {Box} from '@radix-ui/themes'
 
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -28,7 +29,7 @@ const Sidebar = () => {
 
     return (
         <>
-            <div style={{ width: collapsed ? '80px' : '250px', height: '100vh' }} className='sidebar'/>
+            <Box style={{ width: collapsed ? '80px' : '250px', height: '100vh' }} className='sidebar'/>
 
             <motion.div
                 initial={{ opacity: 0 }}
@@ -61,7 +62,7 @@ const Sidebar = () => {
                 <button
                     className="btn btn-toggle mb-3"
                     onClick={toggleSidebar}
-                    style={{ position: 'absolute', right: collapsed ? '10px' : '0', top: 0 }}
+                    style={{ position: 'absolute', right: collapsed ? '10px' : '0', top: 0, transform: "rotate(180deg)" }}
                 >
                     {collapsed ? '☰' : <LogOut size={21} />}
                 </button>
