@@ -1,37 +1,94 @@
 import React, { useState } from "react";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Grid } from "@radix-ui/themes";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../component/Navbar";
 
-const compulsoryItems = [
-  { name: "Chiura", image: "/images/Chuira.webp" },
-  { name: "Buff curry", image: "/images/dyaakula.jpg" },
-  { name: "Bhuttan", image: "/images/bhutan.png" },
-  { name: "Pickles", image: "/images/mulaachar.webp" },
-  { name: "Spinach", image: "/images/spinach.jpeg" },
-  { name: "Beans", image: "/images/bodi.jpg", types: ["Bodi", "Rajma"] },
-  { name: "Aela", image: "/images/local.jpeg" },
-  { name: "Paukwaa", image: "/images/paukwa.jpeg" },
-  { name: "Mushroom", image: "/images/mushroom.jpg" },
-  { name: "Cauliflower", image: "/images/cauli.jpg" },
-  { name: "Dahi", image: "/images/juju.webp" },
-  { name: "Aalu Tama", image: "/images/aalutama.jpg" },
-];
+// Component for individual food item card
+const FoodItemCard = ({ item, isSelected, onToggle, priceInfo, children }) => (
+  <Card style={{ maxWidth: 350 }} size="2">
+    <img 
+      src={item.image} 
+      alt={item.name}
+      style={{
+        width: '100%',
+        height: '200px',
+        objectFit: 'cover',
+        borderRadius: '8px 8px 0 0'
+      }}
+    />
+    <div style={{ padding: '16px' }}>
+      <h3 style={{ marginBottom: '8px' }}>{item.name}</h3>
+      {priceInfo}
+      {children}
+      {onToggle && (
+        <div className="form-check" style={{ marginTop: '12px' }}>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id={`item-${item.name}`}
+            checked={isSelected}
+            onChange={onToggle}
+          />
+          <label className="form-check-label" htmlFor={`item-${item.name}`}>
+            Add to Order
+          </label>
+        </div>
+      )}
+    </div>
+  </Card>
+);
 
-const additionalItems = [
-  { name: "Mutton curry", image: "/images/dyaakula.jpg" },
-  { name: "Fish", image: "/images/fishfry.jpg" },
-  { name: "Farsi", image: "/images/pump.jpeg" },
-  { name: "Laisu", image: "/images/laisu.jpg" },
-  { name: "Mix Fruits", image: "/images/salad.jpeg" },
-  { name: "Juice", image: "/images/coke.webp" },
-];
-
-const dessertPrices = {
-  Barfi: 30,
-  Laalmon: 30,
-  Rasbari: 50,
-};
+// Component for price summary card
+const PriceSummaryCard = ({ basePricePerPlate, additionalCost, totalPrice, onConfirm, selectedItems, selectedDesserts }) => (
+  <Card style={{ width: '23rem' }}>
+    <div style={{ padding: '20px' }}>
+      <h4 style={{ marginBottom: '16px' }}>Order Summary</h4>
+      <div className="price-details">
+        <div className="price-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span>Base Price per Plate:</span>
+          <span>Rs. {basePricePerPlate}</span>
+        </div>
+        {selectedItems.length > 0 && (
+          <div>
+            <h5 style={{ marginTop: '16px' }}>Additional Items:</h5>
+            {selectedItems.map(item => (
+              <div key={item} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span>{item}</span>
+                <span>Rs. {item === "Mutton curry" ? getMuttonCurryPrice(peopleCount) : getMixFruitsPrice(peopleCount)}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        {selectedDesserts.length > 0 && (
+          <div>
+            <h5 style={{ marginTop: '16px' }}>Desserts:</h5>
+            {selectedDesserts.map(dessert => (
+              <div key={dessert} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span>{dessert}</span>
+                <span>Rs. {dessertPrices[dessert] * peopleCount}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', marginBottom: '8px' }}>
+          <span>Additional Items Total:</span>
+          <span>Rs. {additionalCost}</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <span>Delivery Charge:</span>
+          <span>Rs. 1000</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', fontWeight: 'bold' }}>
+          <span>Total:</span>
+          <span>Rs. {totalPrice}</span>
+        </div>
+      </div>
+      <Button variant="solid" color="red" style={{ width: '100%', marginTop: '20px' }} onClick={onConfirm}>
+        Confirm Order
+      </Button>
+    </div>
+  </Card>
+);
 
 const ViewItems = () => {
   const location = useLocation();
@@ -44,16 +101,49 @@ const ViewItems = () => {
 
   const basePricePerPlate = 500;
 
+  // Define compulsory items
+  const compulsoryItems = [
+    { name: "Chiura", image: "/images/Chuira.webp" },
+    { name: "Buff curry", image: "/images/dyaakula.jpg" },
+    { name: "Bhuttan", image: "/images/bhutan.png" },
+    { name: "Pickles", image: "/images/mulaachar.webp" },
+    { name: "Spinach", image: "/images/spinach.jpeg" },
+    { name: "Beans", image: "/images/bodi.jpg", types: ["Bodi", "Rajma"] },
+    { name: "Aela", image: "/images/local.jpeg" },
+    { name: "Paukwaa", image: "/images/paukwa.jpeg" },
+    { name: "Mushroom", image: "/images/mushroom.jpg" },
+    { name: "Cauliflower", image: "/images/cauli.jpg" },
+    { name: "Dahi", image: "/images/juju.webp" },
+    { name: "Aalu Tama", image: "/images/aalutama.jpg" },
+  ];
+
+  // Define additional items
+  const additionalItems = [
+    { name: "Mutton curry", image: "/images/dyaakula.jpg" },
+    { name: "Fish", image: "/images/fishfry.jpg" },
+    { name: "Farsi", image: "/images/pump.jpeg" },
+    { name: "Laisu", image: "/images/laisu.jpg" },
+    { name: "Mix Fruits", image: "/images/salad.jpeg" },
+    { name: "Juice", image: "/images/coke.webp" },
+  ];
+
+  // Define dessert prices
+  const dessertPrices = {
+    "Laalmon": 50,
+    "Payesh": 60,
+    "Rosogolla": 40
+  };
+
+  // Price calculation functions
+  const getMuttonCurryPrice = (count) => count * 200;
+  const getMixFruitsPrice = (count) => count * 50;
+
   const handleItemToggle = (itemName) => {
-    let updatedItems = [...selectedItems];
-
-    if (selectedItems.includes(itemName)) {
-      updatedItems = selectedItems.filter((item) => item !== itemName);
-    } else {
-      updatedItems.push(itemName);
-    }
-
-    setSelectedItems(updatedItems);
+    setSelectedItems(prev => 
+      prev.includes(itemName) 
+        ? prev.filter(item => item !== itemName)
+        : [...prev, itemName]
+    );
   };
 
   const handleBeansSelection = (type) => {
@@ -61,268 +151,122 @@ const ViewItems = () => {
   };
 
   const handleDessertSelection = (type) => {
-    setSelectedDesserts((prev) => {
-      if (prev.includes(type)) {
-        return prev.filter((dessert) => dessert !== type);
-      } else {
-        return [...prev, type];
-      }
-    });
+    setSelectedDesserts(prev => 
+      prev.includes(type)
+        ? prev.filter(dessert => dessert !== type)
+        : [...prev, type]
+    );
   };
 
-  // Price calculation for Mutton curry
-  const getMuttonCurryPrice = (peopleCount) => {
-    if (peopleCount <= 100) return 15000;
-    if (peopleCount <= 150) return 22000;
-    if (peopleCount <= 200) return 30000;
-    if (peopleCount <= 250) return 37000;
-    if (peopleCount <= 300) return 45000;
-    if (peopleCount <= 350) return 52000;
-    if (peopleCount <= 400) return 60000;
-    if (peopleCount <= 450) return 67000;
-    if (peopleCount <= 500) return 75000;
-    return 0;
-  };
-
-  // Price calculation for Mix Fruits
-  const getMixFruitsPrice = (peopleCount) => {
-    if (peopleCount <= 100) return 200;
-    if (peopleCount <= 200) return 400;
-    if (peopleCount <= 300) return 600;
-    if (peopleCount <= 400) return 800;
-    if (peopleCount <= 500) return 1000;
-    return 0;
-  };
-
-  // Price calculation for Fish
-  const getFishPrice = (peopleCount) => {
-    if (peopleCount <= 100) return 10000;
-    if (peopleCount <= 150) return 15000;
-    if (peopleCount <= 200) return 20000;
-    if (peopleCount <= 250) return 25000;
-    if (peopleCount <= 300) return 30000;
-    if (peopleCount <= 350) return 35000;
-    if (peopleCount <= 400) return 40000;
-    if (peopleCount <= 450) return 45000;
-    if (peopleCount <= 500) return 50000;
-    return 0;
-  };
-
-  // Price calculation for Farsi (same as Laisu)
-  const getFarsiPrice = (peopleCount) => {
-    if (peopleCount <= 100) return 700;
-    if (peopleCount <= 150) return 1000;
-    if (peopleCount <= 200) return 1400;
-    if (peopleCount <= 250) return 1700;
-    if (peopleCount <= 300) return 2000;
-    if (peopleCount <= 350) return 2300;
-    if (peopleCount <= 400) return 2600;
-    if (peopleCount <= 450) return 2900;
-    if (peopleCount <= 500) return 3200;
-    return 0;
-  };
-
-  // Price calculation for Laisu (same as Farsi)
-  const getLaisuPrice = (peopleCount) => getFarsiPrice(peopleCount);
-
-  // Price calculation for Juice
-  const getJuicePrice = (peopleCount) => {
-    if (peopleCount <= 100) return 6000;
-    if (peopleCount <= 150) return 9000;
-    if (peopleCount <= 200) return 12000;
-    if (peopleCount <= 250) return 15000;
-    if (peopleCount <= 300) return 18000;
-    if (peopleCount <= 350) return 21000;
-    if (peopleCount <= 400) return 24000;
-    if (peopleCount <= 450) return 27000;
-    if (peopleCount <= 500) return 30000;
-    return 0;
-  };
-
-  // Combine selected desserts into additional items
+  // Calculate total price
   const combinedItems = [...selectedItems, ...selectedDesserts];
-
-  // Calculate additional item cost (including desserts, Mix Fruits, and Juice)
   const additionalCost = combinedItems.reduce((total, itemName) => {
-    const item = additionalItems.find((i) => i.name === itemName);
-    if (item) {
-      if (item.name === "Mutton curry") {
-        return total + getMuttonCurryPrice(peopleCount); // Apply Mutton curry price logic
-      }
-      if (item.name === "Mix Fruits") {
-        return total + getMixFruitsPrice(peopleCount); // Apply Mix Fruits price logic
-      }
-      if (item.name === "Fish") {
-        return total + getFishPrice(peopleCount); // Apply Fish price logic
-      }
-      if (item.name === "Farsi") {
-        return total + getFarsiPrice(peopleCount); // Apply Farsi price logic
-      }
-      if (item.name === "Laisu") {
-        return total + getLaisuPrice(peopleCount); // Apply Laisu price logic
-      }
-      if (item.name === "Juice") {
-        return total + getJuicePrice(peopleCount); // Apply Juice price logic
-      }
-      return total + (item.price || 0) * peopleCount; // For other items, apply normal price
-    }
-    const dessertPrice = dessertPrices[itemName];
-    if (dessertPrice) {
-      return total + dessertPrice * peopleCount; // Dessert cost based on quantity
+    if (itemName === "Mutton curry") {
+      return total + getMuttonCurryPrice(peopleCount);
+    } else if (itemName === "Mix Fruits") {
+      return total + getMixFruitsPrice(peopleCount);
+    } else if (dessertPrices[itemName]) {
+      return total + (dessertPrices[itemName] * peopleCount);
     }
     return total;
   }, 0);
-
-  // Total Price Calculation
-  const totalPrice = peopleCount * basePricePerPlate + additionalCost + 1000; // Including Rs. 1000 delivery charge
-
-  const handleConfirmClick = () => {
-    navigate("/confirm", { state: { peopleCount, totalPrice } });
-  };
+  const totalPrice = peopleCount * basePricePerPlate + additionalCost + 1000;
 
   return (
     <>
       <Navbar className="sticky-navbar" />
-      <div className="container mt-3">
-        <h2>Customize Your Feast</h2>
+      <div className="container mt-4">
+        <h2 style={{ marginBottom: '24px' }}>Customize Your Feast</h2>
         
-        {/* Compulsory Items */}
-        <h4 className="mt-3 textorder">Basic Compulsory Items</h4>
         <div className="row">
-          {compulsoryItems.map((item) => (
-            <div key={item.name} className="col-md-4 mb-3">
-              <Card className="shadow food-card">
-                <Card.Img variant="top" src={item.image} alt={item.name} className="food-image" />
-                <Card.Body className="food-card-body">
-                  <Card.Title>{item.name}</Card.Title>
+          {/* Left side - Food items */}
+          <div className="col-md-8">
+            {/* Compulsory Items */}
+            <h4 className="mb-4">Basic Compulsory Items</h4>
+            <Grid columns={{ initial: "1", sm: "2" }} gap="4">
+              {compulsoryItems.map((item) => (
+                <FoodItemCard 
+                  key={item.name}
+                  item={item}
+                  children={
+                    item.name === "Beans" && (
+                      <div className="d-flex flex-wrap gap-2 justify-content-center mt-2">
+                        {item.types.map((type) => (
+                          <div key={type} className="form-check form-check-inline">
+                            <input
+                              type="radio"
+                              className="form-check-input"
+                              name="beansType"
+                              id={`beans-${type}`}
+                              checked={selectedBeansType === type}
+                              onChange={() => handleBeansSelection(type)}
+                            />
+                            <label className="form-check-label" htmlFor={`beans-${type}`}>
+                              {type}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    )
+                  }
+                />
+              ))}
+            </Grid>
 
-                  {item.name === "Beans" && (
-                    <div className="d-flex flex-wrap gap-2 justify-content-center mt-2">
-                      {item.types.map((type) => (
-                        <div key={type} className="form-check form-check-inline">
-                          <input
-                            type="radio"
-                            className="form-check-input"
-                            name="beansType"
-                            id={`beans-${type}`}
-                            checked={selectedBeansType === type}
-                            onChange={() => handleBeansSelection(type)}
-                          />
-                          <label className="form-check-label" htmlFor={`beans-${type}`}>
-                            {type}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </Card.Body>
-              </Card>
-            </div>
-          ))}
-        </div>
-<hr></hr>
-        {/* Additional Items */}
-        <h4 className="mt-3 textorder">Additional Items</h4>
-        <div className="row">
-          {additionalItems.map((item) => (
-            <div key={item.name} className="col-md-4 mb-3">
-              <Card className="shadow food-card">
-                <Card.Img variant="top" src={item.image} alt={item.name} className="food-image" />
-                <Card.Body className="food-card-body">
-                  <Card.Title>{item.name}</Card.Title>
+            <hr className="my-4" />
 
-                  {item.name === "Mutton curry" && (
-                    <div>
+            {/* Additional Items */}
+            <h4 className="mb-4">Additional Items</h4>
+            <Grid columns={{ initial: "1", sm: "2" }} gap="4">
+              {additionalItems.map((item) => (
+                <FoodItemCard 
+                  key={item.name}
+                  item={item}
+                  isSelected={selectedItems.includes(item.name)}
+                  onToggle={() => handleItemToggle(item.name)}
+                  priceInfo={
+                    item.name === "Mutton curry" ? (
                       <p>Price: Rs. {getMuttonCurryPrice(peopleCount)} (Up to {peopleCount} people)</p>
-                    </div>
-                  )}
-
-                  {item.name === "Mix Fruits" && (
-                    <div>
+                    ) : item.name === "Mix Fruits" ? (
                       <p>Price: Rs. {getMixFruitsPrice(peopleCount)} (Up to {peopleCount} people)</p>
-                    </div>
-                  )}
+                    ) : null
+                  }
+                />
+              ))}
+            </Grid>
 
-                  {item.name === "Fish" && (
-                    <div>
-                      <p>Price: Rs. {getFishPrice(peopleCount)} (Up to {peopleCount} people)</p>
-                    </div>
-                  )}
+            {/* Desserts */}
+            <h4 className="mt-4 mb-4">Desserts</h4>
+            <Grid columns={{ initial: "1", sm: "2" }} gap="4">
+              {Object.entries(dessertPrices).map(([dessert, price]) => (
+                <FoodItemCard 
+                  key={dessert}
+                  item={{
+                    name: dessert,
+                    image: `/images/${dessert.toLowerCase() === 'laalmon' ? 'lalmon.jpg' : dessert.toLowerCase() + '.jpg'}`
+                  }}
+                  isSelected={selectedDesserts.includes(dessert)}
+                  onToggle={() => handleDessertSelection(dessert)}
+                  priceInfo={<p>Price: Rs. {price} per person</p>}
+                />
+              ))}
+            </Grid>
+          </div>
 
-                  {item.name === "Farsi" && (
-                    <div>
-                      <p>Price: Rs. {getFarsiPrice(peopleCount)} (Up to {peopleCount} people)</p>
-                    </div>
-                  )}
-
-                  {item.name === "Laisu" && (
-                    <div>
-                      <p>Price: Rs. {getLaisuPrice(peopleCount)} (Up to {peopleCount} people)</p>
-                    </div>
-                  )}
-
-                  {item.name === "Juice" && (
-                    <div>
-                      <p>Price: Rs. {getJuicePrice(peopleCount)} (Up to {peopleCount} people)</p>
-                    </div>
-                  )}
-
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id={`remove-${item.name}`}
-                      checked={selectedItems.includes(item.name)}
-                      onChange={() => handleItemToggle(item.name)}
-                    />
-                    <label className="form-check-label" htmlFor={`remove-${item.name}`}>
-                      Add to Order
-                    </label>
-                  </div>
-                </Card.Body>
-              </Card>
+          {/* Right side - Price summary */}
+          <div className="col-md-4">
+            <div className="position-fixed" style={{ top: '12rem' }}>
+              <PriceSummaryCard 
+                basePricePerPlate={basePricePerPlate}
+                additionalCost={additionalCost}
+                totalPrice={totalPrice}
+                selectedItems={selectedItems}
+                selectedDesserts={selectedDesserts}
+                onConfirm={() => navigate("/confirm", { state: { peopleCount, totalPrice } })}
+              />
             </div>
-          ))}
+          </div>
         </div>
-
-        {/* Dessert Items */}
-        <h4 className="mt-3">Desserts</h4>
-        <div className="row">
-          {Object.keys(dessertPrices).map((dessert) => (
-            <div key={dessert} className="col-md-4 mb-3">
-              <Card className="shadow food-card">
-                <Card.Img variant="top" src={`/images/${dessert.toLowerCase() === 'laalmon' ? 'lalmon.jpg' : dessert.toLowerCase() + '.jpg'}`} alt={dessert} className="food-image" />
-                <Card.Body className="food-card-body">
-                  <Card.Title>{dessert}</Card.Title>
-                  <p>Price: Rs. {dessertPrices[dessert]} per person</p>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id={`dessert-${dessert}`}
-                      checked={selectedDesserts.includes(dessert)}
-                      onChange={() => handleDessertSelection(dessert)}
-                    />
-                    <label className="form-check-label" htmlFor={`dessert-${dessert}`}>
-                      Add to Order
-                    </label>
-                  </div>
-                </Card.Body>
-              </Card>
-            </div>
-          ))}
-        </div>
-        <div className="sticky-bottom-price">
-        {/* Pricing Details */}
-        <h4 className="mt-3">Price per plate: Rs. {basePricePerPlate}</h4>
-        <h4>Additional Item Cost: Rs. {additionalCost}</h4>
-        <h4>Delivery Charge: Rs. 1000</h4>
-        <h4>Total Price: Rs. {totalPrice}</h4>
-
-        <Button variant="danger" className="mt-3" onClick={handleConfirmClick}>
-          Confirm Order
-        </Button>
-      </div>
       </div>
     </>
   );

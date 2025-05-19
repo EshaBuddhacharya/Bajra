@@ -40,7 +40,7 @@ const Myroute = () => {
           <Route path ="/nonveg" element = {<Nonveg/>}/>
           <Route path = "/drinks" element={<Drinks/>}/>
           <Route path = "/desserts" element = {<Desserts/>}/>
-          <Route path = "/feastpacks" element = {<Feastpack/>}/>
+          <Route path = "/specialFeast" element = {<Feastpack/>}/>
           <Route path = '/view' element = {<Viewitem/>}/>
           <Route path = '/confirm' element = {<ConfirmOrder/>}/>     
           <Route path = "/ordersum" element = {<OrderSum/>}/> 

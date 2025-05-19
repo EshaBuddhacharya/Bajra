@@ -75,12 +75,12 @@ const Navbar = () => {
               <li><button className="dropdown-item text-dark" onClick={() => { setSelectedCategory('Beverage'); navigate('/showItems'); }}>Drinks</button></li>
               <li><button className="dropdown-item text-dark" onClick={() => { setSelectedCategory('Desserts'); navigate('/showItems'); }}>Desserts</button></li>
               <li><hr className="dropdown-divider" /></li>
-              <li><button className="dropdown-item text-dark" onClick={() => { setSelectedCategory('feastpacks'); navigate('/showItems'); }}>Special Feast Packages</button></li>
+              <li><button className="dropdown-item text-dark" onClick={() => { setSelectedCategory('feastpacks'); navigate('/specialFeast'); }}>Special Feast Packages</button></li>
             </ul>
           </li>
 
           <li className="nav-item">
-            <button className="nav-link text-white" onClick={() => { setSelectedCategory('feastpacks'); navigate('/showItems'); }}>Special Feast Packages</button>
+            <button className="nav-link text-white" onClick={() => { setSelectedCategory('feastpacks'); navigate('/specialFeast'); }}>Special Feast Packages</button>
           </li>
 
           {/* Cart Link with Dynamic Count */}
