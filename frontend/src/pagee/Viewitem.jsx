@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Card, Grid } from "@radix-ui/themes";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../component/Navbar";
+import { useAuth } from "../contexts/AuthContext";
+import { useCart } from "../component/CartContext";
 
 // Component for individual food item card
 const FoodItemCard = ({ item, isSelected, onToggle, priceInfo, children }) => (
@@ -39,7 +41,7 @@ const FoodItemCard = ({ item, isSelected, onToggle, priceInfo, children }) => (
 );
 
 // Component for price summary card
-const PriceSummaryCard = ({ basePricePerPlate, additionalCost, totalPrice, onConfirm, selectedItems, selectedDesserts }) => (
+const PriceSummaryCard = ({ basePricePerPlate, additionalCost, totalPrice, onConfirm, selectedItems, selectedDesserts, itemsData }) => (
   <Card style={{ width: '23rem' }}>
     <div style={{ padding: '20px' }}>
       <h4 style={{ marginBottom: '16px' }}>Order Summary</h4>
@@ -51,23 +53,29 @@ const PriceSummaryCard = ({ basePricePerPlate, additionalCost, totalPrice, onCon
         {selectedItems.length > 0 && (
           <div>
             <h5 style={{ marginTop: '16px' }}>Additional Items:</h5>
-            {selectedItems.map(item => (
-              <div key={item} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span>{item}</span>
-                <span>Rs. {item === "Mutton curry" ? getMuttonCurryPrice(peopleCount) : getMixFruitsPrice(peopleCount)}</span>
-              </div>
-            ))}
+            {selectedItems.map(itemId => {
+              const item = itemsData.find(i => i._id === itemId);
+              return (
+                <div key={itemId} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <span>{item?.name}</span>
+                  <span>Rs. {item?.pricePerPerson}</span>
+                </div>
+              );
+            })}
           </div>
         )}
         {selectedDesserts.length > 0 && (
           <div>
             <h5 style={{ marginTop: '16px' }}>Desserts:</h5>
-            {selectedDesserts.map(dessert => (
-              <div key={dessert} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span>{dessert}</span>
-                <span>Rs. {dessertPrices[dessert] * peopleCount}</span>
-              </div>
-            ))}
+            {selectedDesserts.map(itemId => {
+              const item = itemsData.find(i => i._id === itemId);
+              return (
+                <div key={itemId} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <span>{item?.name}</span>
+                  <span>Rs. {item?.pricePerPerson}</span>
+                </div>
+              );
+            })}
           </div>
         )}
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', marginBottom: '8px' }}>
@@ -91,58 +99,38 @@ const PriceSummaryCard = ({ basePricePerPlate, additionalCost, totalPrice, onCon
 );
 
 const ViewItems = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { peopleCount } = location.state || { peopleCount: 0 };
+  const { axiosInstance, isAuthenticated } = useAuth();
+  const { peopleCount, basePricePerPlate } = useCart();
 
+  const [itemsData, setItemsData] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedBeansType, setSelectedBeansType] = useState("");
   const [selectedDesserts, setSelectedDesserts] = useState([]);
 
-  const basePricePerPlate = 500;
+  const deliveryCharge = 1000;
 
-  // Define compulsory items
-  const compulsoryItems = [
-    { name: "Chiura", image: "/images/Chuira.webp" },
-    { name: "Buff curry", image: "/images/dyaakula.jpg" },
-    { name: "Bhuttan", image: "/images/bhutan.png" },
-    { name: "Pickles", image: "/images/mulaachar.webp" },
-    { name: "Spinach", image: "/images/spinach.jpeg" },
-    { name: "Beans", image: "/images/bodi.jpg", types: ["Bodi", "Rajma"] },
-    { name: "Aela", image: "/images/local.jpeg" },
-    { name: "Paukwaa", image: "/images/paukwa.jpeg" },
-    { name: "Mushroom", image: "/images/mushroom.jpg" },
-    { name: "Cauliflower", image: "/images/cauli.jpg" },
-    { name: "Dahi", image: "/images/juju.webp" },
-    { name: "Aalu Tama", image: "/images/aalutama.jpg" },
-  ];
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axiosInstance.get('/api/feast/items');
+        setItemsData(response.data);
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    };
+    fetchItems();
+  }, [axiosInstance]);
 
-  // Define additional items
-  const additionalItems = [
-    { name: "Mutton curry", image: "/images/dyaakula.jpg" },
-    { name: "Fish", image: "/images/fishfry.jpg" },
-    { name: "Farsi", image: "/images/pump.jpeg" },
-    { name: "Laisu", image: "/images/laisu.jpg" },
-    { name: "Mix Fruits", image: "/images/salad.jpeg" },
-    { name: "Juice", image: "/images/coke.webp" },
-  ];
+  const compulsoryItems = itemsData.filter(item => item.category === 'compulsory');
+  const additionalItems = itemsData.filter(item => item.category === 'additional');
+  const dessertItems = itemsData.filter(item => item.category === 'dessert');
 
-  // Define dessert prices
-  const dessertPrices = {
-    "Laalmon": 50,
-    "Payesh": 60,
-    "Rosogolla": 40
-  };
-
-  // Price calculation functions
-  const getMuttonCurryPrice = (count) => count * 200;
-  const getMixFruitsPrice = (count) => count * 50;
-
-  const handleItemToggle = (itemName) => {
+  const handleItemToggle = (itemId) => {
     setSelectedItems(prev => 
-      prev.includes(itemName) 
-        ? prev.filter(item => item !== itemName)
-        : [...prev, itemName]
+      prev.includes(itemId) 
+        ? prev.filter(item => item !== itemId)
+        : [...prev, itemId] 
     );
   };
 
@@ -150,27 +138,74 @@ const ViewItems = () => {
     setSelectedBeansType(type);
   };
 
-  const handleDessertSelection = (type) => {
+  const handleDessertSelection = (itemId) => {
     setSelectedDesserts(prev => 
-      prev.includes(type)
-        ? prev.filter(dessert => dessert !== type)
-        : [...prev, type]
+      prev.includes(itemId)
+        ? prev.filter(dessert => dessert !== itemId)
+        : [...prev, itemId]
     );
   };
 
   // Calculate total price
-  const combinedItems = [...selectedItems, ...selectedDesserts];
-  const additionalCost = combinedItems.reduce((total, itemName) => {
-    if (itemName === "Mutton curry") {
-      return total + getMuttonCurryPrice(peopleCount);
-    } else if (itemName === "Mix Fruits") {
-      return total + getMixFruitsPrice(peopleCount);
-    } else if (dessertPrices[itemName]) {
-      return total + (dessertPrices[itemName] * peopleCount);
-    }
-    return total;
+  const additionalCost = [...selectedItems, ...selectedDesserts].reduce((total, itemId) => {
+    const item = itemsData.find(i => i._id === itemId);
+    return total + (item?.pricePerPerson || 0) * peopleCount;
   }, 0);
-  const totalPrice = peopleCount * basePricePerPlate + additionalCost + 1000;
+  
+  const totalPrice = peopleCount * basePricePerPlate + additionalCost + deliveryCharge;
+
+  const handleConfirmOrder = async () => {
+    if (!isAuthenticated) {
+      navigate("/signin");
+      return;
+    }
+
+    if (!selectedBeansType && compulsoryItems.some(item => item.subTypes?.length > 0)) {
+      alert("Please select a beans type");
+      return;
+    }
+
+    try {
+      const orderData = {
+        peopleCount,
+        compulsoryItems: compulsoryItems.map(item => ({
+          item: item._id,
+          selectedSubType: item.subTypes?.length > 0 ? selectedBeansType : null
+        })),
+        additionalItems: selectedItems.map(itemId => {
+          const item = itemsData.find(i => i._id === itemId);
+          return {
+            item: itemId,
+            pricePerPerson: item.pricePerPerson
+          };
+        }),
+        desserts: selectedDesserts.map(itemId => {
+          const item = itemsData.find(i => i._id === itemId);
+          return {
+            item: itemId,
+            pricePerPerson: item.pricePerPerson
+          };
+        }),
+        basePricePerPlate,
+        deliveryCharge,
+        totalPrice
+      };
+
+      const response = await axiosInstance.post('/api/feast/orders', orderData);
+      
+      if (response.status === 201) {
+        alert("Order placed successfully!");
+        // Reset form
+        setSelectedItems([]);
+        setSelectedBeansType("");
+        setSelectedDesserts([]);
+        navigate("/showitems");
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+      alert("Failed to create order. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -186,12 +221,12 @@ const ViewItems = () => {
             <Grid columns={{ initial: "1", sm: "2" }} gap="4">
               {compulsoryItems.map((item) => (
                 <FoodItemCard 
-                  key={item.name}
+                  key={item._id}
                   item={item}
                   children={
-                    item.name === "Beans" && (
+                    item.subTypes?.length > 0 && (
                       <div className="d-flex flex-wrap gap-2 justify-content-center mt-2">
-                        {item.types.map((type) => (
+                        {item.subTypes.map((type) => (
                           <div key={type} className="form-check form-check-inline">
                             <input
                               type="radio"
@@ -220,17 +255,11 @@ const ViewItems = () => {
             <Grid columns={{ initial: "1", sm: "2" }} gap="4">
               {additionalItems.map((item) => (
                 <FoodItemCard 
-                  key={item.name}
+                  key={item._id}
                   item={item}
-                  isSelected={selectedItems.includes(item.name)}
-                  onToggle={() => handleItemToggle(item.name)}
-                  priceInfo={
-                    item.name === "Mutton curry" ? (
-                      <p>Price: Rs. {getMuttonCurryPrice(peopleCount)} (Up to {peopleCount} people)</p>
-                    ) : item.name === "Mix Fruits" ? (
-                      <p>Price: Rs. {getMixFruitsPrice(peopleCount)} (Up to {peopleCount} people)</p>
-                    ) : null
-                  }
+                  isSelected={selectedItems.includes(item._id)}
+                  onToggle={() => handleItemToggle(item._id)}
+                  priceInfo={<p>Price: Rs. {item.pricePerPerson} per person</p>}
                 />
               ))}
             </Grid>
@@ -238,16 +267,13 @@ const ViewItems = () => {
             {/* Desserts */}
             <h4 className="mt-4 mb-4">Desserts</h4>
             <Grid columns={{ initial: "1", sm: "2" }} gap="4">
-              {Object.entries(dessertPrices).map(([dessert, price]) => (
+              {dessertItems.map((item) => (
                 <FoodItemCard 
-                  key={dessert}
-                  item={{
-                    name: dessert,
-                    image: `/images/${dessert.toLowerCase() === 'laalmon' ? 'lalmon.jpg' : dessert.toLowerCase() + '.jpg'}`
-                  }}
-                  isSelected={selectedDesserts.includes(dessert)}
-                  onToggle={() => handleDessertSelection(dessert)}
-                  priceInfo={<p>Price: Rs. {price} per person</p>}
+                  key={item._id}
+                  item={item}
+                  isSelected={selectedDesserts.includes(item._id)}
+                  onToggle={() => handleDessertSelection(item._id)}
+                  priceInfo={<p>Price: Rs. {item.pricePerPerson} per person</p>}
                 />
               ))}
             </Grid>
@@ -262,7 +288,8 @@ const ViewItems = () => {
                 totalPrice={totalPrice}
                 selectedItems={selectedItems}
                 selectedDesserts={selectedDesserts}
-                onConfirm={() => navigate("/confirm", { state: { peopleCount, totalPrice } })}
+                itemsData={itemsData}
+                onConfirm={handleConfirmOrder}
               />
             </div>
           </div>
@@ -272,4 +299,4 @@ const ViewItems = () => {
   );
 };
 
-export default ViewItems;
+export default ViewItems; 

@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import Navbar from '../component/Navbar';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { useCart } from '../component/CartContext';
 
 const Feastpack = () => {
-  const [peopleCount, setPeopleCount] = useState("");
+  const { basePricePerPlate, peopleCount, setPeopleCount } = useCart();
   const [error, setError] = useState("");
 
-  const pricePerPlate = 500; // Fixed price per plate
-  const totalPrice = peopleCount ? peopleCount * pricePerPlate : 0; // Calculate total price
+  const totalPrice = peopleCount ? peopleCount * basePricePerPlate : 0;
 
   const handlePeopleChange = (e) => {
     const value = parseInt(e.target.value, 10);
@@ -34,7 +34,7 @@ const Feastpack = () => {
           <div className="col-md-8">
             <div className="card-body">
               <h5 className="card-title">Feast Package</h5>
-              <p><strong>Per plate: Rs. 500</strong></p>
+              <p><strong>Per plate: Rs. {basePricePerPlate}</strong></p>
 
               <div className="mb-3">
                 <label htmlFor="peopleCount" className="form-label">
