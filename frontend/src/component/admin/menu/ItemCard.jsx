@@ -127,7 +127,7 @@ const FoodItem = ({ name, imgUrl, description, types, portion, _id, index, handl
         return (
             <Flex justify={'end'} minWidth={'80px'} className='mb-2'>
                 <Text size='7' weight='bold'>
-                    $ {price}
+                    Rs {price}
                 </Text>
             </Flex>
         )
