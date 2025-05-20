@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import '../App.css';
-import { LogOut, Coffee, ShoppingBag, LayoutDashboard, Users } from 'lucide-react';
+import { LogOut, Coffee, ShoppingBag, LayoutDashboard, Users, Ham } from 'lucide-react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion'
 import {Box} from '@radix-ui/themes'
@@ -90,6 +90,16 @@ const Sidebar = () => {
                                 <div className="d-flex gap-3">
                                     <ShoppingBag size={21} />
                                     Orders
+                                </div>
+                            )}
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="feastOrder" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                            {collapsed ? <ShoppingBag size={21} /> : (
+                                <div className="d-flex gap-3">
+                                    <Ham size={21} />
+                                    Feast Orders
                                 </div>
                             )}
                         </NavLink>

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/AuthContext';
-import SearchBar from '../../component/admin/orders/SearchBar';
-import FilterDropdown from '../../component/admin/orders/FilterDropDown';
-import OrdersTable from '../../component/admin/orders/OrdersTable';
-import { ShoppingBag } from 'lucide-react';
+import SearchBar from '../../component/admin/FeastOrders/SearchBar';
+import FilterDropdown from '../../component/admin/FeastOrders/FilterDropDown';
+import OrdersTable from '../../component/admin/FeastOrders/FeastTable';
+import { ShoppingBag, Ham } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { Box } from '@radix-ui/themes';
 
@@ -20,12 +20,12 @@ export default function Orders() {
   const toggleOrder = () => {
     setIsAscending(!isAscending)
   }
-  // fetching orders
+
   useEffect(() => {
     async function fetchOrders() {
       try {
         setIsOrdersLoading(true);
-        const { data } = await axiosInstance.get('/api/order/getAllOrders');
+        const { data } = await axiosInstance.get('/api/feast/orders');
         setOrders(data);
         setIsOrdersLoading(false);
       } catch (err) {
@@ -37,48 +37,36 @@ export default function Orders() {
 
   const handleDelete = (id) => {
     axiosInstance
-      .delete(`/api/order/deleteOrder/${id}`)
+      .delete(`/api/feast/orders/${id}`)
       .then(() => setOrders((prev) => prev.filter((o) => o._id !== id)))
       .catch((err) => toast.error('Error deleting order', err.message));
   };
+
   const filteredOrders = orders.filter((o) => {
     const searchTerm = search.trim().toLowerCase();
     const searchMatch =
-      o.user.name.toLowerCase().includes(searchTerm) ||
-      o.user.phone.toLowerCase().includes(searchTerm) ||
-      o.deliveryLocation.toLowerCase().includes(searchTerm) ||
-      o.orderStatus.toLowerCase().includes(searchTerm) ||
+      o.user?.name?.toLowerCase().includes(searchTerm) ||
       o._id.toLowerCase().includes(searchTerm) ||
-      o.items.some(item =>
-        item.selectedType.name.toLowerCase().includes(searchTerm)
+      o.status?.toLowerCase().includes(searchTerm) ||
+      o.compulsoryItems.some(item => 
+        item.item.name.toLowerCase().includes(searchTerm) ||
+        item.selectedSubType?.toLowerCase().includes(searchTerm)
       );
 
-    return searchMatch && (!selectedStatus || o.orderStatus === selectedStatus);
+    return searchMatch && (!selectedStatus || o.status === selectedStatus);
   }).sort((a, b) => {
     if (!sortBy) return 0;
 
     let comparison = 0;
     switch (sortBy) {
       case 'date':
-        comparison = new Date(b.createdAt) - new Date(a.createdAt);
-        break;
-      case 'name':
-        comparison = a.user.name.localeCompare(b.user.name);
-        break;
-      case 'phone':
-        comparison = a.user.phone.localeCompare(b.user.phone);
-        break;
-      case 'location':
-        comparison = a.deliveryLocation.localeCompare(b.deliveryLocation);
+        comparison = new Date(b.orderDate) - new Date(a.orderDate);
         break;
       case 'status':
-        comparison = a.orderStatus.localeCompare(b.orderStatus);
-        break;
-      case 'type':
-        comparison = a.items[0]?.selectedType.name.localeCompare(b.items[0]?.selectedType.name) || 0;
+        comparison = a.status.localeCompare(b.status);
         break;
       case 'total':
-        comparison = b.total - a.total;
+        comparison = b.totalPrice - a.totalPrice;
         break;
       default:
         return 0;
@@ -87,10 +75,10 @@ export default function Orders() {
   });
 
   return (
-    <Box p='8' pr={{initial: '3', md: '8'}} style={{ flexGrow: 1 }}>
+    <Box p='7' px='9' pr={{initial: '3', md: '8'}} style={{ flexGrow: 1 }}>
       <h2 className='d-flex align-items-center gap-2'>
-        <ShoppingBag fontWeight={400} size={30} />
-        Order Management
+        <Ham fontWeight={400} size={30} />
+        Feast Order Management
       </h2>
       <div className="my-4 d-flex gap-2 align-items-center">
         <SearchBar search={search} onSearchChange={setSearch} placeholder="Search the orders..."/>

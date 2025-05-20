@@ -3,7 +3,7 @@ import ItemCard, { SkeletonFoodItem } from './ItemCard';
 
 const MenuCards = ({ filteredData, isLoading, handleDelete, onEdit }) => {
     if (isLoading) return (
-        <Grid columns={{ initial: "2", md: "2" }} gap="3" width="auto">
+        <Grid columns={{ initial: "1", md: "2" }} gap="3" width="auto">
             {[...Array(6)].map((_, index) => (
                 <div key={index}>
                     <SkeletonFoodItem />

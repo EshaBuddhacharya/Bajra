@@ -1,12 +1,14 @@
 import { Table } from '@radix-ui/themes';
 import {
-  Smartphone,
-  MapPin,
-  ChartNoAxesColumn,
+  Users,
+  DollarSign,
   Calendar,
-  ListCollapse,
+  Package,
+  Truck,
+  ChartNoAxesColumn,
+  GripVertical, 
+  MapPin
 } from 'lucide-react';
-import { GrAction } from 'react-icons/gr';
 import { PiFinnTheHumanFill } from "react-icons/pi";
 
 
@@ -19,14 +21,14 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             className="d-flex align-items-center" 
             style={{ cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
             onClick={() => {
-              setSortBy('name');
+              setSortBy('user');
               toggleOrder();
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             <PiFinnTheHumanFill size={16} style={{ marginRight: '6px' }} />
-            Full Name
+            Customer
           </div>
         </Table.ColumnHeaderCell>
         <Table.ColumnHeaderCell style={{ fontWeight: '500' }}>
@@ -34,22 +36,52 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             className="d-flex align-items-center"
             style={{ cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
             onClick={() => {
-              setSortBy('phone');
+              setSortBy('peopleCount');
               toggleOrder();
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <Smartphone size={16} style={{ marginRight: '6px' }} />
-            Phone Number
+            <Users size={16} style={{ marginRight: '6px' }} />
+            People Count
           </div>
-        </Table.ColumnHeaderCell> 
+        </Table.ColumnHeaderCell>
         <Table.ColumnHeaderCell style={{ fontWeight: '500' }}>
           <div 
             className="d-flex align-items-center"
             style={{ cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
             onClick={() => {
-              setSortBy('location');
+              setSortBy('contact');
+              toggleOrder();
+            }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+          >
+            <Users size={16} style={{ marginRight: '6px' }} />
+            Contact
+          </div>
+        </Table.ColumnHeaderCell>
+        <Table.ColumnHeaderCell style={{ fontWeight: '500' }}>
+          <div 
+            className="d-flex align-items-center"
+            style={{ cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
+            onClick={() => {
+              setSortBy('totalPrice');
+              toggleOrder();
+            }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+          >
+            <DollarSign size={16} style={{ marginRight: '6px' }} />
+            Total Price
+          </div>
+        </Table.ColumnHeaderCell>
+        <Table.ColumnHeaderCell style={{ fontWeight: '500' }}>
+          <div 
+            className="d-flex align-items-center"
+            style={{ cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
+            onClick={() => {
+              setSortBy('totalPrice');
               toggleOrder();
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
@@ -71,7 +103,7 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             <ChartNoAxesColumn size={16} style={{ marginRight: '6px' }} />
-            Order Status
+            Status
           </div>
         </Table.ColumnHeaderCell>
         <Table.ColumnHeaderCell style={{ fontWeight: '500' }}>
@@ -79,7 +111,7 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             className="d-flex align-items-center"
             style={{ cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
             onClick={() => {
-              setSortBy('date');
+              setSortBy('orderDate');
               toggleOrder();
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
@@ -94,19 +126,19 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             className="d-flex align-items-center"
             style={{ cursor: 'pointer', padding: '8px', borderRadius: '4px' }}
             onClick={() => {
-              setSortBy('type');
+              setSortBy('items');
               toggleOrder();
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <ListCollapse size={16} style={{ marginRight: '6px' }} />
+            <Package size={16} style={{ marginRight: '6px' }} />
             Items
           </div>
         </Table.ColumnHeaderCell>
         <Table.ColumnHeaderCell style={{ fontWeight: '500' }}>
           <div className="d-flex align-items-center">
-            <GrAction size={16} style={{ marginRight: '6px' }} />
+            <GripVertical size={16} style={{ marginRight: '6px' }} />
             Actions
           </div>
         </Table.ColumnHeaderCell>

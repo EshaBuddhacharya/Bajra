@@ -7,7 +7,8 @@ exports.getAllOrders = async (req, res) => {
     const orders = await Order.find()
       .populate('compulsoryItems.item')
       .populate('additionalItems.item')
-      .populate('desserts.item');
+      .populate('desserts.item')
+      .populate('user');
     res.status(200).json(orders);
   } catch (error) {
     console.error('Error getting all orders:', error.message);
