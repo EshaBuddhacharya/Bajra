@@ -53,7 +53,7 @@ const FooterLinks = () => (
 
 const SignInForm = ({ email, setEmail, password, setPassword, errors, handleSubmit, handleGoogleLogin }) => (
   <div className="container shadow border bg-light rounded-2 p-4" style={{ maxWidth: '30rem', minHeight: '400px' }}>
-    <form onSubmit={handleSubmit} noValidate>
+    <form onSubmit={handleSubmit}>
       <h1 className="h3 mb-4 text-center"><b>Please sign in</b></h1>
 
       <InputField

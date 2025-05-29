@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, use } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from "axios";
-import { AuthContext } from '../contexts/AuthContext'
+import { AuthContext, useAuth } from '../contexts/AuthContext'
 import Cookies from 'js-cookie'
 import Header from '../component/Header';
 
@@ -18,8 +18,8 @@ const Registerpage = () => {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate(); // Hook for navigation
-  const { setIsAuthenticated, setAuthCookie } = useContext(AuthContext)
-
+  const { setIsAuthenticated, setAccessToken } = useContext(AuthContext)
+  const { axiosInstance } = useAuth()
 
   // Function to validate form
   const validateForm = () => {
@@ -83,7 +83,7 @@ const Registerpage = () => {
     e.preventDefault(); // Prevent default form submission
     if (validateForm()) {
       try {
-        const response = axios.post(`${import.meta.env.VITE_APP_BACKEND_BASE_URL}/api/auth/register`, {
+        const response = axiosInstance.post(`/api/auth/register`, {
           "name": `${formData.firstName} ${formData.lastName}`,
           "password": formData.password,
           "email": formData.email,
@@ -91,12 +91,12 @@ const Registerpage = () => {
           "phone": `${formData.countryCode} ${formData.phone}`
         }, { withCredentials: true })
         setIsAuthenticated(true)
-        setAuthCookie(Cookies.get('loginToken'))
+        // setAccessToken(Cookies.get('loginToken'))
         console.log('user registereed Successfully');
         navigate('/showitems'); // Redirect to the Cart page if validation passes
       }
       catch (error) {
-        alert('Error registering user: ', error)
+        alert('Error registering user: ', error.response?.data?.error)
       }
     }
   };
