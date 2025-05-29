@@ -101,7 +101,7 @@ const getAllOrders = async (req, res) => {
     console.log("GET /api/order/getAllOrders")
     try {
         const orders = await Order.find()
-            .select('user deliveryLocation orderStatus createdAt items')
+            .select('user deliveryLocation orderStatus createdAt items additionalInstructions')
             .populate({
                 path: 'user',
                 select: 'name phone'

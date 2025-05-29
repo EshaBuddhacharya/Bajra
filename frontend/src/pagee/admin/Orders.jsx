@@ -7,6 +7,7 @@ import OrdersTable from '../../component/admin/orders/OrdersTable';
 import { ShoppingBag } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { Box } from '@radix-ui/themes';
+import DetailsDialog from '../../component/admin/orders/DetailsDialog';
 
 export default function Orders() {
   const { axiosInstance } = useAuth();
@@ -16,6 +17,8 @@ export default function Orders() {
   const [selectedStatus, setSelectedStatus] = useState('')
   const [sortBy, setSortBy] = useState('')
   const [isAscending, setIsAscending] = useState(false)
+  const [isDetailsDialogOpen, setDetailsDialogOpen]= useState(false)
+  const [selectedOrderDetails, setSelectedOrderDetails] = useState()
 
   const toggleOrder = () => {
     setIsAscending(!isAscending)
@@ -103,8 +106,15 @@ export default function Orders() {
           isLoading={isOrdersLoading}
           toggleOrder={toggleOrder}
           setSortBy={setSortBy}
+          setDetailsDialogOpen={setDetailsDialogOpen}
+          setSelectedOrderDetails={setSelectedOrderDetails}
         />
       </AnimatePresence>
+      <DetailsDialog 
+        isDetailsDialogOpen={isDetailsDialogOpen} 
+        setDetailsDialogOpen={setDetailsDialogOpen}
+        selectedOrderDetails={selectedOrderDetails}
+       />
     </Box>
   );
 }

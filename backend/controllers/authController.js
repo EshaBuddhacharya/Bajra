@@ -84,6 +84,13 @@ const signInController = async (req, res) => {
 
     const { idToken, refreshToken, expiresIn, localId } = response.data;
 
+    // validate if user exists in database 
+    const decodedToken = await admin.auth().verifyIdToken(idToken)
+    let user = await User.findOne({ firebaseUid: decodedToken.uid });
+    if (!user) { 
+      return res.status(400).send("No user found")
+    }
+
     res.cookie("loginToken", idToken, cookieOptions(24 * 60 * 60 * 1000));
     res.cookie("refreshToken", refreshToken, cookieOptions(30 * 24 * 60 * 60 * 1000));
 
