@@ -2,7 +2,7 @@ import { Table, Skeleton, Text, Flex } from '@radix-ui/themes';
 import TableHeader from './TableHeader';
 import OrderRow from './OrderRow';
 
-export default function OrdersTable({ orders, onDelete, isLoading, toggleOrder, setSortBy, isAscending, sortBy }) {
+export default function OrdersTable({ orders, onDelete, isLoading, toggleOrder, setSortBy, isAscending, sortBy, setDetailsDialogOpen, setSelectedOrderDetails }) {
   return (
     isLoading ? (
       <OrderSkeleton />
@@ -25,6 +25,8 @@ export default function OrdersTable({ orders, onDelete, isLoading, toggleOrder, 
                 order={order} 
                 onDelete={onDelete} 
                 index={index} 
+                setDetailsDialogOpen={setDetailsDialogOpen}
+                setSelectedOrderDetails={setSelectedOrderDetails}
               />
             ))
           )}
