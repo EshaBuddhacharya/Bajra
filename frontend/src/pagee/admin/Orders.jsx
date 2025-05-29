@@ -87,7 +87,7 @@ export default function Orders() {
   });
 
   return (
-    <Box p='8' pr={{initial: '3', md: '8'}} style={{ flexGrow: 1 }}>
+    <Box p='9' pr={{initial: '3', md: '8'}} style={{ flexGrow: 1 }}>
       <h2 className='d-flex align-items-center gap-2'>
         <ShoppingBag fontWeight={400} size={30} />
         Order Management

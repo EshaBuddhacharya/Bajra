@@ -22,5 +22,14 @@ const submitFeedback = async (req, res) => {
         return res.status(500).send("Failed to save user feedback")
     }
 }
-
-module.exports = {submitFeedback}
+const getFeedbacks = async (req, res) => {
+    try { 
+        const feedbacks = await Feedback.find({}).populate('user')
+        return res.status(200).send({feedbacks})
+    }
+    catch (error) { 
+        console.log(error)
+        return res.status(500).send("Error getting user feedback")
+    }
+}
+module.exports = {submitFeedback, getFeedbacks}

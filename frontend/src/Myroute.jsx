@@ -26,6 +26,7 @@ import Dashboard from './pagee/admin/Dashboard';
 import Playground from './pagee/Playground'
 import Users from './pagee/admin/Users'
 import FeastOrder from './pagee/admin/FeastOrder'
+import Feedbacks from "./pagee/admin/Feedbacks"
 
 const Myroute = () => {
   return (
@@ -60,6 +61,7 @@ const Myroute = () => {
           <Route path="orders" element={<Orders />} />
           <Route path="users" element={<Users />} />
           <Route path='feastOrder' element={<FeastOrder />} />
+          <Route path='feedbacks' element={<Feedbacks />} />
         </Route>
       </Routes>
     </Router>
