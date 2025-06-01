@@ -39,7 +39,7 @@ export default function FeastRow({ order, onDelete, index }) {
           animate="animate"
           exit="exit"
         >
-          {order.user.phone}
+          {order.peopleCount}
         </motion.div>
       </Table.Cell>
       <Table.Cell justify='center'>
