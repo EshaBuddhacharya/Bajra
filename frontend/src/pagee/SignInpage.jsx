@@ -41,13 +41,13 @@ const GoogleButton = ({ onClick }) => (
 );
 
 const FooterLinks = () => (
-  <div className="d-flex justify-content-between mt-4">
+  <div className="d-flex justify-content-center mt-4">
     <Link to="/registerin" className="text-secondary">
       Create account?
     </Link>
-    <Link to="/forgotpass" className="text-secondary">
+    {/* <Link to="/forgotpass" className="text-secondary">
       Forgot Password?
-    </Link>
+    </Link> */}
   </div>
 );
 

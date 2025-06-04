@@ -124,7 +124,7 @@ const PriceSummaryDetails = ({ basePricePerPlate, additionalCost, totalPrice, se
   </div>
 );
 
-const ItemsGrid = ({ title, items, selectedItems, onToggle, selectedBeansType, onBeansSelection }) => (
+const ItemsGrid = ({ title, items, selectedItems, onToggle, selectedBeansType, onBeansSelection, type }) => (
   <>
     <h4 className="mb-4">{title}</h4>
     <Grid columns={{ initial: "1", sm: "2" }} gap="4">
@@ -133,7 +133,7 @@ const ItemsGrid = ({ title, items, selectedItems, onToggle, selectedBeansType, o
           key={item._id}
           item={item}
           isSelected={selectedItems?.includes(item._id)}
-          onToggle={() => onToggle?.(item._id)}
+          onToggle={onToggle? () => onToggle?.(item._id) : null}
           priceInfo={item.pricePerPerson && <p>Price: Rs. {item.pricePerPerson} per person</p>}
           children={
             item.subTypes?.length > 0 && (
@@ -310,7 +310,7 @@ const ViewItems = () => {
           </div>
 
           <div className="col-md-4" >
-            <div className="position-fixed" style={{ top: '12rem' }}>
+            <div className="position-sticky" style={{ top: '12rem' }}>
               <PriceSummaryCard
                 basePricePerPlate={basePricePerPlate}
                 additionalCost={additionalCost}
