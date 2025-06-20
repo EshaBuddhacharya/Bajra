@@ -40,7 +40,7 @@ app.use(cookieParser());
 // Upload route with CORS headers
 app.post('/upload', upload.single('image'), (req, res) => {
   console.log("POST /upload")
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.header('Access-Control-Allow-Origin', ['http://localhost:5173', 'https://bajra.onrender.com']);
   res.header('Access-Control-Allow-Credentials', 'true');
   const publicPath = `/media/images/${req.file.filename}`;
   res.json({
