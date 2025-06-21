@@ -7,6 +7,7 @@ import OrdersTable from '../../component/admin/FeastOrders/FeastTable';
 import { ShoppingBag, Ham } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { Box } from '@radix-ui/themes';
+import DetailsDialog from '../../component/admin/FeastOrders/Dialogs/DetailsDialog';
 
 export default function Orders() {
   const { axiosInstance } = useAuth();
@@ -16,7 +17,8 @@ export default function Orders() {
   const [selectedStatus, setSelectedStatus] = useState('')
   const [sortBy, setSortBy] = useState('')
   const [isAscending, setIsAscending] = useState(false)
-
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false)
+  const [selectedOrder, setSelectedOrder] = useState()
   const toggleOrder = () => {
     setIsAscending(!isAscending)
   }
@@ -75,7 +77,7 @@ export default function Orders() {
   });
 
   return (
-    <Box p='7' px='9' pr={{initial: '3', md: '8'}} style={{ flexGrow: 1 }}>
+    <Box p='6' pl='9' pr={{initial: '3', md: '4'}} style={{ flexGrow: 1 }}>
       <h2 className='d-flex align-items-center gap-2'>
         <Ham fontWeight={400} size={30} />
         Feast Order Management
@@ -91,8 +93,16 @@ export default function Orders() {
           isLoading={isOrdersLoading}
           toggleOrder={toggleOrder}
           setSortBy={setSortBy}
+          isDetailsDialogOpen={isDetailsDialogOpen}
+          setIsDetailsDialogOpen={setIsDetailsDialogOpen}
+          setSelectedOrder={setSelectedOrder}
         />
       </AnimatePresence>
+      <DetailsDialog 
+        isDetailsDialogOpen={isDetailsDialogOpen}
+        setDetailsDialogOpen={setIsDetailsDialogOpen}
+        selectedOrderDetails={selectedOrder}
+      />
     </Box>
   );
 }

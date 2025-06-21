@@ -45,8 +45,12 @@ const AddItemDialog = () => {
         formData.append('image', file);
 
         try {
-            const response = await axiosInstance.post('/upload', formData);
-            setFormData(prev => ({ ...prev, imgUrl: response.data.url }));
+            const response = await axiosInstance.post('/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            setFormData(prev => ({ ...prev, imgUrl: response.data.path }));
         } catch (error) {
             toast.error('Error uploading image');
             console.error('Error uploading image:', error);
@@ -154,7 +158,7 @@ const AddItemDialog = () => {
                         </div>
                         {formData.imgUrl && (
                             <div className="mb-3">
-                                <img src={formData.imgUrl} alt="Preview" style={{ maxWidth: '200px' }} />
+                                <img src={`${import.meta.env.VITE_BACKEND_BASE_URL}/${formData.imgUrl}`} alt="Preview" style={{ maxWidth: '200px' }} />
                             </div>
                         )}
                         <fieldset className="mb-3">

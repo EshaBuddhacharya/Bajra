@@ -62,11 +62,11 @@ exports.getUserOrders = async (req, res) => {
 // Create a new order
 exports.createOrder = async (req, res) => {
   try {
-    console.log("POST /api/feast/orders/createOrder");
-    const { peopleCount, compulsoryItems, additionalItems, desserts, basePricePerPlate, deliveryCharge, totalPrice } = req.body;
+    console.log("POST /api/feast/orders");
+    const { peopleCount, compulsoryItems, additionalItems, desserts, basePricePerPlate, deliveryCharge, totalPrice, additionalInstruction, deliveryLocation, deliveryDate } = req.body;
     const user = req.user;
 
-    // Find MongoDB user using Firebase UID
+      // Find MongoDB user using Firebase UID
     const dbUser = await User.findOne({ firebaseUid: user.user_id });
     if (!dbUser) {
       return res.status(404).json({ message: 'User not found' });
@@ -86,7 +86,10 @@ exports.createOrder = async (req, res) => {
       desserts,
       basePricePerPlate,
       deliveryCharge,
-      totalPrice
+      totalPrice,
+      additionalInstruction,
+      deliveryDate, 
+      deliveryLocation
     });
 
     const savedOrder = await newOrder.save();

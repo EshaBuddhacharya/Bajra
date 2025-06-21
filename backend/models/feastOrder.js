@@ -61,14 +61,22 @@ const FeastOrderSchema = new mongoose.Schema({
       type: Number,
       required: true
     },
-    orderDate: {
-      type: Date,
-      default: Date.now
-    },
     status: {
       type: String,
       default: 'pending',
       enum: ['pending', 'confirmed', 'delivered']
+    }, 
+    additionalInstruction: {
+      type: String,
+      default: ''
+    },
+    deliveryLocation: {
+      type: String,
+      default: ''
+    },
+    deliveryDate: {
+      type: Date,
+      default: Date.now
     }
   });
   

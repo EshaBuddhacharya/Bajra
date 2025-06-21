@@ -111,6 +111,7 @@ const FoodItem = ({ name, imgUrl, description, types, desc: portion, addToCart, 
                   className="btn btn-outline-danger"
                   style={{ width: 40, height: 40, borderRadius: 8 }}
                   onClick={increaseQuantity}
+                  disabled={quantity >= 10} // Limit max quantity to 10
                 >
                   +
                 </button>
@@ -118,16 +119,16 @@ const FoodItem = ({ name, imgUrl, description, types, desc: portion, addToCart, 
             </div>
 
             <div className="d-flex justify-content-between align-items-center">
-              <div className="dropdown me-2">
+              <div className="dropdown me-2" style={{ position: 'relative', zIndex: 9999 }}>
                 <button
                   className="btn btn-dark dropdown-toggle"
                   type="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Type: {selectedType}
+                  Type: {selectedType} 
                 </button>
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu" style={{ position: 'absolute', zIndex: 9999999999999 }}>
                   {types.map((type) => (
                     <li key={type.name}>
                       <button

@@ -149,7 +149,7 @@ const EditItemDialog = ({ item, onEdit }) => {
                         </div>
                         {formData.imgUrl && (
                             <div className="mb-3">
-                                <img src={formData.imgUrl} alt="Preview" style={{ maxWidth: '200px' }} />
+                                <img src={`${import.meta.env.VITE_BACKEND_BASE_URL}${formData.imgUrl}`} alt="Preview" style={{ maxWidth: '200px' }} />
                             </div>
                         )}
                         <fieldset className="mb-3">

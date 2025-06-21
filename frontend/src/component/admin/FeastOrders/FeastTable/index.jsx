@@ -2,7 +2,7 @@ import { Table, Skeleton, Text, Flex } from '@radix-ui/themes';
 import TableHeader from './TableHeader';
 import FeastRow from './FeastRow';
 
-export default function FeastTable({ orders, onDelete, isLoading, toggleOrder, setSortBy, isAscending, sortBy }) {
+export default function FeastTable({ orders, onDelete, isLoading, toggleOrder, setSortBy, isAscending, sortBy, isDetailsDialogOpen, setIsDetailsDialogOpen, selectedOrder, setSelectedOrder }) {
   return (
     isLoading ? (
       <OrderSkeleton />
@@ -25,6 +25,8 @@ export default function FeastTable({ orders, onDelete, isLoading, toggleOrder, s
                 order={order} 
                 onDelete={onDelete} 
                 index={index} 
+                setIsDetailsDialogOpen={setIsDetailsDialogOpen}
+                setSelectedOrder={setSelectedOrder}
               />
             ))
           )}
@@ -41,7 +43,7 @@ const OrderSkeleton = () => {
       <Table.Body>
         {[...Array(7)].map((_, i) => (
           <Table.Row key={i}>
-            {[...Array(7)].map((_, j) => (
+            {[...Array(9)].map((_, j) => (
               <Table.Cell key={j}>
                 <Skeleton />
               </Table.Cell>

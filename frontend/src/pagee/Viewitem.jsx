@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Grid } from "@radix-ui/themes";
+import { Button, Card, Grid, Dialog, Flex } from "@radix-ui/themes";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../component/Navbar";
 import { useAuth } from "../contexts/AuthContext";
@@ -80,7 +80,7 @@ const OrderSummarySection = ({ title, items, itemsData }) => (
   )
 );
 
-const PriceSummaryCard = ({ basePricePerPlate, additionalCost, totalPrice, onConfirm, selectedItems, selectedDesserts, itemsData }) => (
+const PriceSummaryCard = ({ basePricePerPlate, additionalCost, totalPrice, onOpenDialog, selectedItems, selectedDesserts, itemsData }) => (
   <Card style={{ width: '23rem' }}>
     <div style={{ padding: '20px' }}>
       <h4 style={{ marginBottom: '16px' }}>Order Summary</h4>
@@ -92,7 +92,7 @@ const PriceSummaryCard = ({ basePricePerPlate, additionalCost, totalPrice, onCon
         selectedDesserts={selectedDesserts}
         itemsData={itemsData}
       />
-      <Button variant="solid" color="red" style={{ width: '100%', marginTop: '20px' }} onClick={onConfirm}>
+      <Button variant="solid" color="red" style={{ width: '100%', marginTop: '20px' }} onClick={onOpenDialog}>
         Confirm Order
       </Button>
     </div>
@@ -105,10 +105,8 @@ const PriceSummaryDetails = ({ basePricePerPlate, additionalCost, totalPrice, se
       <span>Base Price per Plate:</span>
       <span>Rs. {basePricePerPlate}</span>
     </div>
-
     <OrderSummarySection title="Additional Items" items={selectedItems} itemsData={itemsData} />
     <OrderSummarySection title="Desserts" items={selectedDesserts} itemsData={itemsData} />
-
     <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', marginBottom: '8px' }}>
       <span>Additional Items Total:</span>
       <span>Rs. {additionalCost}</span>
@@ -124,7 +122,7 @@ const PriceSummaryDetails = ({ basePricePerPlate, additionalCost, totalPrice, se
   </div>
 );
 
-const ItemsGrid = ({ title, items, selectedItems, onToggle, selectedBeansType, onBeansSelection, type }) => (
+const ItemsGrid = ({ title, items, selectedItems, onToggle, selectedBeansType, onBeansSelection }) => (
   <>
     <h4 className="mb-4">{title}</h4>
     <Grid columns={{ initial: "1", sm: "2" }} gap="4">
@@ -133,7 +131,7 @@ const ItemsGrid = ({ title, items, selectedItems, onToggle, selectedBeansType, o
           key={item._id}
           item={item}
           isSelected={selectedItems?.includes(item._id)}
-          onToggle={onToggle? () => onToggle?.(item._id) : null}
+          onToggle={onToggle ? () => onToggle(item._id) : null}
           priceInfo={item.pricePerPerson && <p>Price: Rs. {item.pricePerPerson} per person</p>}
           children={
             item.subTypes?.length > 0 && (
@@ -170,6 +168,80 @@ const BeansTypeSelector = ({ types, selectedType, onSelect }) => (
   </div>
 );
 
+const OrderConfirmationDialog = ({ isOpen, onClose, onConfirm }) => {
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [additionalInstructions, setAdditionalInstructions] = useState("");
+  const [orderDate, setOrderDate] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onConfirm({
+      deliveryAddress,
+      additionalInstructions,
+      orderDate,
+    });
+    onClose();
+  };
+
+  const minOrderDate = new Date();
+  minOrderDate.setDate(minOrderDate.getDate() + 7);
+  const minOrderDateString = minOrderDate.toISOString().split("T")[0];
+
+  return (
+    <Dialog.Root open={isOpen} onOpenChange={onClose}>
+      <Dialog.Content maxWidth="450px">
+        <Dialog.Title>Confirm Your Order</Dialog.Title>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="deliveryAddress" className="form-label">
+              Delivery Address <span className="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="deliveryAddress"
+              value={deliveryAddress}
+              onChange={(e) => setDeliveryAddress(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="additionalInstructions" className="form-label">
+              Additional Instructions
+            </label>
+            <textarea
+              className="form-control"
+              id="additionalInstructions"
+              value={additionalInstructions}
+              onChange={(e) => setAdditionalInstructions(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="orderDate" className="form-label">
+              Order Date <span className="text-danger">*</span>
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              id="orderDate"
+              value={orderDate}
+              onChange={(e) => setOrderDate(e.target.value)}
+              min={minOrderDateString}
+              required
+            />
+          </div>
+          <Flex gap="3" mt="4" justify="end">
+            <Button variant="soft" color="gray" type="button" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit">Confirm</Button>
+          </Flex>
+        </form>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+};
+
 const ViewItems = () => {
   const navigate = useNavigate();
   const { axiosInstance, isAuthenticated } = useAuth();
@@ -179,6 +251,7 @@ const ViewItems = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedBeansType, setSelectedBeansType] = useState("");
   const [selectedDesserts, setSelectedDesserts] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const deliveryCharge = 1000;
 
@@ -225,7 +298,7 @@ const ViewItems = () => {
 
   const totalPrice = peopleCount * basePricePerPlate + additionalCost + deliveryCharge;
 
-  const handleConfirmOrder = async () => {
+  const confirmOrder = async (formData) => {
     if (!isAuthenticated) {
       navigate("/signin");
       return;
@@ -259,7 +332,10 @@ const ViewItems = () => {
         }),
         basePricePerPlate,
         deliveryCharge,
-        totalPrice
+        totalPrice,
+        deliveryLocation: formData.deliveryAddress,
+        additionalInstruction: formData.additionalInstructions,
+        deliveryDate: formData.orderDate,
       };
 
       const response = await axiosInstance.post('/api/feast/orders', orderData);
@@ -283,7 +359,6 @@ const ViewItems = () => {
       <div className="container mt-4">
         <div className="row">
           <h2 style={{ marginBottom: '24px' }}>Customize Your Feast</h2>
-
           <div className="col-md-8">
             <ItemsGrid
               title="Basic Compulsory Items"
@@ -291,16 +366,13 @@ const ViewItems = () => {
               selectedBeansType={selectedBeansType}
               onBeansSelection={handleBeansSelection}
             />
-
             <hr className="my-4" />
-
             <ItemsGrid
               title="Additional Items"
               items={additionalItems}
               selectedItems={selectedItems}
               onToggle={handleItemToggle}
             />
-
             <ItemsGrid
               title="Desserts"
               items={dessertItems}
@@ -308,22 +380,26 @@ const ViewItems = () => {
               onToggle={handleDessertSelection}
             />
           </div>
-
-          <div className="col-md-4" >
+          <div className="col-md-4">
             <div className="position-sticky" style={{ top: '12rem' }}>
               <PriceSummaryCard
                 basePricePerPlate={basePricePerPlate}
                 additionalCost={additionalCost}
                 totalPrice={totalPrice}
+                onOpenDialog={() => setIsDialogOpen(true)}
                 selectedItems={selectedItems}
                 selectedDesserts={selectedDesserts}
                 itemsData={itemsData}
-                onConfirm={handleConfirmOrder}
               />
             </div>
           </div>
         </div>
       </div>
+      <OrderConfirmationDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={confirmOrder}
+      />
     </>
   );
 };
