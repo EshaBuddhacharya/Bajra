@@ -32,6 +32,8 @@ const upload = multer({ storage });
 const allowedOrigins = [
   'http://localhost:5173',
   'https://bajra.onrender.com',
+  'http://localhost:3000',
+  'http://frontend:3000',
 ];
 
 app.use(cors({

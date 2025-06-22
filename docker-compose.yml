@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: ./backend
+    container_name: my-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules  # Add this line
+    environment:
+      - NODE_ENV=development
+
+  frontend:
+    build: ./frontend
+    container_name: my-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # Add this line
+    environment:
+      - NODE_ENV=development
+      - VITE_BACKEND_BASE_URL=http://localhost:5000
+    depends_on:
+      - backend
