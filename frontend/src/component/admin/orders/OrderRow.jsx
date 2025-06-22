@@ -29,7 +29,7 @@ export default function OrderRow({ order, onDelete, index, setDetailsDialogOpen,
           animate="animate"
           exit="exit"
         >
-          {order.user.name}
+          {order.user?.name}
         </motion.div>
       </Table.RowHeaderCell>
       <Table.Cell>
@@ -40,7 +40,7 @@ export default function OrderRow({ order, onDelete, index, setDetailsDialogOpen,
           animate="animate"
           exit="exit"
         >
-          {order.user.phone}
+          {order.user?.phone}
         </motion.div>
       </Table.Cell>
       <Table.Cell>

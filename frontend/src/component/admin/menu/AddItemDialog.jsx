@@ -160,7 +160,7 @@ const AddItemDialog = () => {
                             <div className="mb-3">
                                 <img src={`${import.meta.env.VITE_BACKEND_BASE_URL}/${formData.imgUrl}`} alt="Preview" style={{ maxWidth: '200px' }} />
                             </div>
-                        )}
+                        )}  
                         <fieldset className="mb-3">
                             <legend className="mb-2">Types / Prices</legend>
                             {formData.types.map((type, idx) => (

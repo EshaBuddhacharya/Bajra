@@ -72,7 +72,7 @@ export default function TableHeader({sortBy, isAscending, setSortBy, toggleOrder
             onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0f0f0'}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <DollarSign size={16} style={{ marginRight: '6px' }} />
+            <div style={{ marginRight: '6px' }}> Rs. </div>
             Total Price
           </div>
         </Table.ColumnHeaderCell>

@@ -47,8 +47,8 @@ export default function Orders() {
   const filteredOrders = orders.filter((o) => {
     const searchTerm = search.trim().toLowerCase();
     const searchMatch =
-      o.user.name.toLowerCase().includes(searchTerm) ||
-      o.user.phone.toLowerCase().includes(searchTerm) ||
+      o.user?.name.toLowerCase().includes(searchTerm) ||
+      o.user?.phone.toLowerCase().includes(searchTerm) ||
       o.deliveryLocation.toLowerCase().includes(searchTerm) ||
       o.orderStatus.toLowerCase().includes(searchTerm) ||
       o._id.toLowerCase().includes(searchTerm) ||

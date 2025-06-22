@@ -97,7 +97,7 @@ export default function FeastRow({ order, onDelete, index, setIsDetailsDialogOpe
             animate="animate"
             exit="exit"
           >
-            {new Date(order.orderDate).toLocaleDateString()}
+            {new Date(order.deliveryDate).toLocaleDateString()}
           </motion.div>
         </Table.Cell>
         <Table.Cell justify='center'>
