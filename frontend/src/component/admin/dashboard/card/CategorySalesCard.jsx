@@ -1,31 +1,12 @@
 import { Card, Box, Text, Heading, Flex } from '@radix-ui/themes';
 import { ChartPie } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { useDashboardContext } from '../context';
 
-const data = [
-    {
-        name: 'Veg',
-        sales: 4000,
-    },
-    {
-        name: 'Non-Veg',
-        sales: 3500,
-    },
-    {
-        name: 'Drinks',
-        sales: 2800,
-    },
-    {
-        name: 'Desserts',
-        sales: 2000,
-    },
-    {
-        name: 'Special Feast',
-        sales: 3200,
-    },
-];
 
 export default function CategorySalesCard({ title }) {
+    const { salesData } = useDashboardContext();
+    const data = salesData.salesByCategory; 
     return (
         <Box
             flexGrow='1'
@@ -41,7 +22,7 @@ export default function CategorySalesCard({ title }) {
                 <Box style={{ width: '100%', height: 200 }}>
                     <ResponsiveContainer>
                         <BarChart data={data}>
-                            <XAxis dataKey="name" />
+                            <XAxis dataKey="category" />
                             <YAxis />
                             <Bar dataKey="sales" fill="#102542" />
                         </BarChart>

@@ -74,7 +74,7 @@ const Sidebar = () => {
                 >
                     <li>
                         <NavLink to="dashboard" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                            {collapsed ? <ShoppingBag size={21} /> : (
+                            {collapsed ? <LayoutDashboard size={21} /> : (
                                 <div className="d-flex gap-3">
                                     <LayoutDashboard size={24}/>
                                     Dashboard
@@ -94,7 +94,7 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <NavLink to="feastOrder" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                            {collapsed ? <ShoppingBag size={21} /> : (
+                            {collapsed ? <Ham size={21} /> : (
                                 <div className="d-flex gap-3">
                                     <Ham size={21} />
                                     Feast Orders
@@ -124,7 +124,7 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <NavLink to="feedbacks" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                            {collapsed ? <ShoppingBag size={21} /> : (
+                            {collapsed ? <MessageSquareDot size={21} /> : (
                                 <div className="d-flex gap-3">
                                     <MessageSquareDot size={21} />
                                     Feedbacks

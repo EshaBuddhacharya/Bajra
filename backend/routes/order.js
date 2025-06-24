@@ -11,5 +11,7 @@ router.get('/getDeliveryCost', verifyFirebaseToken, orderController.getDeliveryC
 router.get('/getAllOrders', verifyAdminToken, orderController.getAllOrders)
 router.put('/updateOrderStatus', verifyAdminToken, orderController.updateOrderStatus)
 router.delete('/deleteOrder/:id',verifyAdminToken, orderController.deleteOrder)
+router.get('/getSalesData', orderController.getSalesData)
+router.get('/getRecentOrders', orderController.getRecentOrders)
 
 module.exports = router; 
