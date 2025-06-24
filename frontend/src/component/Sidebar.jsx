@@ -5,7 +5,7 @@ import '../App.css';
 import { LogOut, Coffee, ShoppingBag, LayoutDashboard, Users, Ham, MessageSquareDot } from 'lucide-react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion'
-import {Box} from '@radix-ui/themes'
+import { Box } from '@radix-ui/themes'
 
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -29,7 +29,7 @@ const Sidebar = () => {
 
     return (
         <>
-            <Box style={{ width: collapsed ? '80px' : '250px', height: '100vh' }} className='sidebar'/>
+            <Box style={{ width: collapsed ? '80px' : '250px', height: '100vh' }} className='sidebar' />
 
             <motion.div
                 initial={{ opacity: 0 }}
@@ -66,24 +66,22 @@ const Sidebar = () => {
                 >
                     {collapsed ? '☰' : <LogOut size={21} />}
                 </button>
-                <motion.ul 
+                <motion.ul
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
                     className="nav nav-pills flex-column mb-auto gap-2"
                 >
-                    {/* <li>
-                        <NavLink to="dashboard"
-                            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
-                        >
-                            {collapsed ? <LayoutDashboard size={21} /> : (
+                    <li>
+                        <NavLink to="dashboard" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                            {collapsed ? <ShoppingBag size={21} /> : (
                                 <div className="d-flex gap-3">
-                                    <LayoutDashboard size={21} />
+                                    <LayoutDashboard size={24}/>
                                     Dashboard
                                 </div>
                             )}
                         </NavLink>
-                    </li> */}
+                    </li>
                     <li>
                         <NavLink to="orders" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
                             {collapsed ? <ShoppingBag size={21} /> : (
@@ -116,9 +114,9 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <NavLink to="users" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                            {collapsed ? <Users  size={21} /> : (
+                            {collapsed ? <Users size={21} /> : (
                                 <div className="d-flex gap-3">
-                                    <Users  size={21} />
+                                    <Users size={21} />
                                     Users
                                 </div>
                             )}

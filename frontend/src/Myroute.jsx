@@ -55,10 +55,11 @@ const Myroute = () => {
           <Route path = '/playground' element = {<Playground />} /> 
         </Route>
         <Route path='admin' element={<AdminLayout />}>
-          <Route index element={<Orders />} />
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path='orders' element={<Orders />} />
           {/* <Route path='dashboard' element={<Dashboard />} /> */}
           <Route path="menu" element={<AdminMenu />} />
-          <Route path="orders" element={<Orders />} />
           <Route path="users" element={<Users />} />
           <Route path='feastOrder' element={<FeastOrder />} />
           <Route path='feedbacks' element={<Feedbacks />} />
