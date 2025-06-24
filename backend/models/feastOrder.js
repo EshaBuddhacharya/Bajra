@@ -64,7 +64,7 @@ const FeastOrderSchema = new mongoose.Schema({
     status: {
       type: String,
       default: 'pending',
-      enum: ['pending', 'confirmed', 'delivered']
+      enum: ['pending', 'inprogress', 'in delivery', 'completed', 'canceled']
     }, 
     additionalInstruction: {
       type: String,

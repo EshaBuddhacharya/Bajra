@@ -20,8 +20,7 @@ export default function OrderStatusSelect({ initialStatus, orderId }) {
     try {
       setStatusValue(newStatus);
       setStatusColor(statusColorMap[newStatus] || 'blue');
-      await axiosInstance.put('/api/order/updateOrderStatus', {
-        order_id: orderId,
+      await axiosInstance.put(`/api/feast/orders/${orderId}/status`, {
         status: newStatus,
       });
     } catch (err) {

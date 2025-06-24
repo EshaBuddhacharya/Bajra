@@ -18,28 +18,28 @@ exports.getAllOrders = async (req, res) => {
 
 // Get user's orders
 exports.getUserOrders = async (req, res) => {
-    try {
-      const user_id = req.user.user_id;
-      const user = await User.findOne({ firebaseUid: user_id }).catch(err => {
-        console.error("Error retrieving user:", err);
-        return res.status(500).send("Error retrieving user");
+  try {
+    const user_id = req.user.user_id;
+    const user = await User.findOne({ firebaseUid: user_id }).catch(err => {
+      console.error("Error retrieving user:", err);
+      return res.status(500).send("Error retrieving user");
+    });
+
+    const userOrders = await Order.find({ user: user._id })
+      .populate('compulsoryItems.item')
+      .populate('additionalItems.item')
+      .populate('desserts.item')
+      .sort({ createdAt: -1, status: 1 })
+      .catch(err => {
+        console.error("Error retrieving user's orders:", err);
+        return res.status(500).send("Error retrieving user orders");
       });
 
-      const userOrders = await Order.find({ user: user._id })
-        .populate('compulsoryItems.item')
-        .populate('additionalItems.item')
-        .populate('desserts.item')
-        .sort({ createdAt: -1, status: 1 })
-        .catch(err => {
-          console.error("Error retrieving user's orders:", err);
-          return res.status(500).send("Error retrieving user orders");
-        });
-
-      return res.status(200).json(userOrders);
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({ message: error.message });
-    }
+    return res.status(200).json(userOrders);
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // Get a single order by ID
@@ -66,7 +66,7 @@ exports.createOrder = async (req, res) => {
     const { peopleCount, compulsoryItems, additionalItems, desserts, basePricePerPlate, deliveryCharge, totalPrice, additionalInstruction, deliveryLocation, deliveryDate } = req.body;
     const user = req.user;
 
-      // Find MongoDB user using Firebase UID
+    // Find MongoDB user using Firebase UID
     const dbUser = await User.findOne({ firebaseUid: user.user_id });
     if (!dbUser) {
       return res.status(404).json({ message: 'User not found' });
@@ -88,7 +88,7 @@ exports.createOrder = async (req, res) => {
       deliveryCharge,
       totalPrice,
       additionalInstruction,
-      deliveryDate, 
+      deliveryDate,
       deliveryLocation
     });
 
@@ -147,7 +147,7 @@ exports.deleteOrder = async (req, res) => {
 exports.updateOrderStatus = async (req, res) => {
   try {
     const { status } = req.body;
-    if (!['pending', 'confirmed', 'delivered'].includes(status)) {
+    if (!['pending', 'inprogress', 'in delivery', 'completed', 'canceled'].includes(status)) {
       return res.status(400).json({ message: 'Invalid status value' });
     }
 

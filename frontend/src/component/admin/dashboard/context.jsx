@@ -48,18 +48,22 @@ export const DashboardProvider = ({ children }) => {
     const [isViewRecentOrderDetails, setIsViewRecentOrderDetails] = useState(false);
     const [selectedRecentOrder, setSelectedRecentOrder] = useState(null);
     const { axiosInstance } = useAuth();
+    const [isDashboardDataLoading, setIsDashboardDataLoading] = useState(true);
 
     useEffect(() => {
         const fetchSalesData = async () => {
             try {
+                setIsDashboardDataLoading(true);
                 const response = await Promise.all([
-                    axiosInstance.get('/api/order/getSalesData'),
-                    axiosInstance.get('/api/order/getRecentOrders')
+                    axiosInstance.get('/api/sales/getSalesData'),
+                    axiosInstance.get('/api/sales/getRecentOrders')
                 ]);
                 setSalesData(response[0].data);
                 setRecentOrder(response[1].data);
             } catch (error) {
                 console.error('Error fetching sales data:', error);
+            } finally {
+                setIsDashboardDataLoading(false);
             }
         };
 
@@ -80,6 +84,7 @@ export const DashboardProvider = ({ children }) => {
         selectedRecentOrder,
         handleViewRecentOrderDetails, 
         setIsViewRecentOrderDetails,
+        isDashboardDataLoading,
     };
 
     return (
